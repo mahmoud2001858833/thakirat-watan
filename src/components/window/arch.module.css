@@ -1,0 +1,14 @@
+.frame {
+  position: absolute;
+  /* الصندوق -16..116 × -18..148 بالنسبة لفتحة 100 × 138 */
+  width: 132%; height: calc(166 / 138 * 100%);
+  left: -16%; top: calc(-18 / 138 * 100%);
+  overflow: visible;
+  filter: drop-shadow(0 14px 22px rgb(42 36 32 / .16));
+}
+.frame :is(rect, path) { stroke: #d2c2a3; stroke-width: .35; }
+.t0 { fill: #f1e7d3; }
+.t1 { fill: #e9dcc3; }
+.t2 { fill: #f5ecdc; }
+.sill { fill: #ddcdb0; }
+.frame .soffit { stroke: none; }

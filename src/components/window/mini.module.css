@@ -1,0 +1,6 @@
+.box { position: relative; width: 100%; aspect-ratio: 100 / 138; }
+.opening {
+  position: absolute; inset: 0; overflow: hidden;
+  border-radius: 50% 50% 0 0 / 36.2% 36.2% 0 0;
+  background: var(--sand);
+}

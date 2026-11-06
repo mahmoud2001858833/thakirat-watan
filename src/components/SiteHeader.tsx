@@ -4,24 +4,16 @@ import { getDict } from '@/i18n';
 import { getViewer, hasRole } from '@/lib/viewer';
 import { signOut } from '@/app/signin/actions';
 import { ThemeToggle } from './ThemeToggle';
+import { AccountMenu } from './AccountMenu';
 import s from './SiteHeader.module.css';
 
 async function UserNav() {
   const t = getDict();
   const v = await getViewer();
-  return (
-    <>
-      {v && <li><Link href="/studio">{t.nav.studio}</Link></li>}
-      {hasRole(v, 'admin', 'reviewer') && <li><Link href="/admin">{t.nav.admin}</Link></li>}
-      <li>
-        {v ? (
-          <form action={signOut}><button className="btn btn-quiet" type="submit">{t.nav.signOut}</button></form>
-        ) : (
-          <Link href="/signin">{t.nav.signIn}</Link>
-        )}
-      </li>
-    </>
-  );
+  if (!v) return <li><Link href="/signin">{t.nav.signIn}</Link></li>;
+  const items: { href: string; label: string }[] = [{ href: '/studio', label: t.nav.studio }];
+  if (hasRole(v, 'admin', 'reviewer')) items.push({ href: '/admin', label: t.nav.admin });
+  return <AccountMenu items={items} signOut={signOut} signOutLabel={t.nav.signOut} menuLabel={t.nav.account} />;
 }
 
 /** الإطار ثابت ويُرسل فوراً؛ الجزء الخاص بالمستخدم يصل بعده (أسرع على الإنترنت الضعيف) */

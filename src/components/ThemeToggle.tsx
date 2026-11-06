@@ -3,9 +3,8 @@ import { useSyncExternalStore } from 'react';
 
 type Mode = 'light' | 'dark';
 const read = (): Mode => {
-  const d = document.documentElement.dataset.theme;
-  if (d === 'light' || d === 'dark') return d;
-  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // الفاتح هو الافتراضي دائماً؛ الداكن اختيار صريح فقط
+  return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
 };
 const listeners = new Set<() => void>();
 const subscribe = (fn: () => void) => { listeners.add(fn); return () => listeners.delete(fn); };
@@ -14,7 +13,8 @@ export function ThemeToggle({ label }: { label: string }) {
   const mode = useSyncExternalStore(subscribe, read, () => 'light' as Mode);
   const toggle = () => {
     const next: Mode = mode === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
+    if (next === 'dark') document.documentElement.dataset.theme = 'dark';
+    else delete document.documentElement.dataset.theme;
     try { localStorage.setItem('theme', next); } catch {}
     listeners.forEach((l) => l());
   };

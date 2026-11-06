@@ -1,0 +1,87 @@
+/* ألوان الأوقات الأربعة. «.vars» يُطبَّق على المشهد وعلى حاويته (لتلوين ما تحته). الافتراضي: ظهيرة. */
+.vars {
+  --sky-top: #86afd3; --sky-mid: #c3d9e6; --sky-horizon: #f1e6cc;
+  --glow-core: rgb(255 246 220 / .95); --glow-mid: rgb(255 240 205 / .35); --glow-edge: rgb(255 240 205 / 0);
+  --sun: #fff6dc; --moon: #f4f0e4; --haze: #f3e7cf;
+  --far-top: #c7c2ae; --far-base: #dad1b9;
+  --rock-lit: #eab27e; --rock: #d08f5e; --rock-shade: #a8653f; --flute: #7a4428; --flute-o: .16; --butte: #c99a74;
+  --sand-far: #ead3a8; --sand-near: #e2c08c; --dune: #e7c693; --dune-lit: #f4dcb0;
+  --hill-top: #b4b382; --hill-base: #8f9364; --stone: #d8cdb4; --stone-lit: #ece3cf;
+  --tree: #6f7b52; --tree-lit: #a3ae84; --trunk: #5b4a39; --trunk-lit: #7a654f;
+  --stars: 0; --sun-o: 1; --moon-o: 0;
+  --sun-x: 720px; --sun-y: 215px; --sun-s: 1; --moon-x: 830px; --moon-y: 448px;
+}
+:global(html[data-phase="dawn"]) .vars {
+  --sky-top: #8f93c1; --sky-mid: #e7aca5; --sky-horizon: #fad8bd;
+  --glow-core: rgb(255 222 200 / .95); --glow-mid: rgb(255 205 185 / .4); --glow-edge: rgb(255 205 185 / 0);
+  --sun: #ffe6d3; --haze: #f6cfbe;
+  --far-top: #c3a3b0; --far-base: #dcbab9;
+  --rock-lit: #e9b2a2; --rock: #c58d84; --rock-shade: #94636a; --flute: #6b3f45; --flute-o: .13; --butte: #b98a8a;
+  --sand-far: #ecc8b0; --sand-near: #e2b49c; --dune: #e7c0a8; --dune-lit: #f4d6c2;
+  --hill-top: #b1a596; --hill-base: #8d8074; --stone: #d9c8be; --stone-lit: #ecddd4;
+  --tree: #726c5e; --tree-lit: #9b9384; --trunk: #5d5048; --trunk-lit: #776759;
+  --stars: .22; --sun-x: 826px; --sun-y: 548px; --sun-s: 1;
+}
+:global(html[data-phase="dusk"]) .vars {
+  --sky-top: #5c5a8e; --sky-mid: #e48c6e; --sky-horizon: #f9c47e;
+  --glow-core: rgb(255 214 150 / 1); --glow-mid: rgb(255 170 100 / .45); --glow-edge: rgb(255 160 90 / 0);
+  --sun: #ffd28c; --haze: #f2a982;
+  --far-top: #9a7486; --far-base: #c18a84;
+  --rock-lit: #e08c62; --rock: #a8624d; --rock-shade: #6e3d3a; --flute: #3e1e1c; --flute-o: .18; --butte: #8f5547;
+  --sand-far: #d9a27a; --sand-near: #c98a62; --dune: #cf946c; --dune-lit: #e7b48a;
+  --hill-top: #85745c; --hill-base: #5f5242; --stone: #b59d84; --stone-lit: #cdb59a;
+  --tree: #55513f; --tree-lit: #7b745b; --trunk: #46392f; --trunk-lit: #5e4c3e;
+  --stars: .1; --sun-x: 822px; --sun-y: 556px; --sun-s: 1.2;
+}
+:global(html[data-phase="night"]) .vars {
+  --sky-top: #0d1a38; --sky-mid: #20366a; --sky-horizon: #46608f;
+  --glow-core: rgb(225 232 255 / .7); --glow-mid: rgb(200 214 255 / .16); --glow-edge: rgb(200 214 255 / 0);
+  --haze: #3e5383;
+  --far-top: #34446a; --far-base: #2b3a5e;
+  --rock-lit: #5d6a94; --rock: #3a4570; --rock-shade: #232c4d; --flute: #0e1430; --flute-o: .28; --butte: #313c63;
+  --sand-far: #3c486b; --sand-near: #2e3858; --dune: #36425f; --dune-lit: #4a587b;
+  --hill-top: #2a3452; --hill-base: #1d2540; --stone: #46537a; --stone-lit: #59678c;
+  --tree: #1f2843; --tree-lit: #34406a; --trunk: #192036; --trunk-lit: #262f4c;
+  --stars: 1; --sun-o: 0; --moon-o: 1;
+}
+
+.scene { display: block; width: 100%; height: 100%; }
+.skyTop { stop-color: var(--sky-top); }
+.skyMid { stop-color: var(--sky-mid); }
+.skyHorizon { stop-color: var(--sky-horizon); }
+.glowCore { stop-color: var(--glow-core); }
+.glowMid { stop-color: var(--glow-mid); }
+.glowEdge { stop-color: var(--glow-edge); }
+.hazeStop { stop-color: var(--haze); }
+.hazeRect { opacity: .6; }
+.rockLit { stop-color: var(--rock-lit); }
+.rock { stop-color: var(--rock); }
+.rockShade { stop-color: var(--rock-shade); }
+.farTop { stop-color: var(--far-top); }
+.farBase { stop-color: var(--far-base); }
+.sandFar { stop-color: var(--sand-far); }
+.sandNear { stop-color: var(--sand-near); }
+.hillTop { stop-color: var(--hill-top); }
+.hillBase { stop-color: var(--hill-base); }
+
+.stars { fill: #fff; opacity: var(--stars); }
+.twinkle { animation: twinkle 3.6s ease-in-out infinite; }
+@keyframes twinkle { 50% { opacity: .25; } }
+.sun { transform: translate(var(--sun-x), var(--sun-y)) scale(var(--sun-s)); opacity: var(--sun-o); }
+.sunDisc { fill: var(--sun); }
+.moon { transform: translate(var(--moon-x), var(--moon-y)); opacity: var(--moon-o); }
+.moonDisc { fill: var(--moon); }
+.flute { fill: none; stroke: var(--flute); stroke-opacity: var(--flute-o); stroke-width: 2.6; stroke-linecap: round; }
+.butte { fill: var(--butte); }
+.dune { fill: var(--dune); opacity: .85; }
+.duneLit { fill: var(--dune-lit); opacity: .8; }
+.terrace { fill: none; stroke: var(--stone-lit); stroke-opacity: .32; stroke-width: 3; stroke-linecap: round; }
+.trunk { fill: var(--trunk); }
+.trunkLit { fill: var(--trunk-lit); }
+.canopy { fill: var(--tree); }
+.canopyLit { fill: var(--tree-lit); opacity: .85; }
+
+.scene :is(stop, path, rect, ellipse, .stars, .sun, .moon) {
+  transition: stop-color 1.6s var(--ease), fill 1.6s var(--ease), stroke 1.6s var(--ease), opacity 1.6s var(--ease), transform 1.6s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) { .twinkle { animation: none; } }

@@ -29,7 +29,7 @@ export function SignInForms({ t, next }: { t: T; next: string }) {
         <label htmlFor="email">{t.email}</label>
         <input id="email" name="email" type="email" autoComplete="email" inputMode="email" required dir="ltr" />
       </div>
-      <button className="btn btn-primary" disabled={linkPending}>{t.send}</button>{' '}
+      <button className="btn btn-primary" disabled={linkPending}>{t.send}</button>
       <button type="button" className="btn btn-quiet" onClick={() => setMode('password')}>{t.usePassword}</button>
     </form>
   ) : (
@@ -44,7 +44,7 @@ export function SignInForms({ t, next }: { t: T; next: string }) {
         <label htmlFor="password">{t.password}</label>
         <input id="password" name="password" type="password" autoComplete="current-password" minLength={8} required dir="ltr" />
       </div>
-      <button className="btn btn-primary" disabled={pwPending}>{t.signInPassword}</button>{' '}
+      <button className="btn btn-primary" disabled={pwPending}>{t.signInPassword}</button>
       <button type="button" className="btn btn-quiet" onClick={() => setMode('link')}>{t.send}</button>
     </form>
   );

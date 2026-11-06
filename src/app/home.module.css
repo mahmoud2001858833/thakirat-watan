@@ -1,53 +1,113 @@
+/* ما بعد القوس: غرف المعرض المضيئة */
+.inside {
+  position: relative; z-index: 2;
+  margin-top: -18svh;
+  background: var(--ivory);
+  border-radius: 36px 36px 0 0;
+  box-shadow: 0 -24px 48px -24px rgb(42 36 32 / .18);
+  padding: var(--space-9) var(--gutter) 0;
+}
+.kicker {
+  display: inline-flex; align-items: center; gap: .7em;
+  font-size: var(--step--1); color: var(--gold-text); font-weight: 600; margin-bottom: var(--space-5); max-width: none;
+}
+.kicker::before { content: ""; width: 32px; height: 1px; background: var(--gold-fill); }
+
+/* المقدمة */
+.intro {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5);
+  max-width: 1200px; margin-inline: auto; padding-bottom: var(--section);
+}
+.statement {
+  font-family: var(--font-serif); font-size: clamp(1.7rem, 1.1rem + 2.6vw, 3.3rem); line-height: 1.55;
+  max-width: 26ch; margin: 0; color: var(--ink);
+}
+.introBody { color: var(--ink-2); font-size: var(--step-1); line-height: 1.8; max-width: 44ch; margin: 0; }
+@media (min-width: 1000px) {
+  .intro { grid-template-columns: 1fr 1.6fr; column-gap: var(--space-8); align-items: end; }
+  .intro .kicker { grid-column: 1 / -1; }
+  .statement { grid-column: 2; grid-row: 2; }
+  .introBody { grid-column: 1; grid-row: 2; align-self: end; }
+}
+
+/* مفتاح درجات التوثيق: صف تحريري بفواصل ذهبية */
+.legend { max-width: 1200px; margin: 0 auto var(--section); }
+.legendTitle { font-size: var(--step-2); margin-bottom: var(--space-6); }
+.legendList { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr)); margin: 0; border-top: 1px solid var(--hairline-gold); }
+.legendItem { padding: var(--space-5) 0 var(--space-5); border-bottom: 1px solid var(--hairline-gold); min-width: 0; }
+.legendItem dt { margin-bottom: var(--space-3); }
+.legendItem dd { margin: 0; color: var(--ink-2); font-size: var(--step--1); line-height: 1.8; }
+@media (min-width: 760px) {
+  .legendItem { padding-inline-end: var(--space-5); border-bottom: 0; }
+  .legendItem + .legendItem { border-inline-start: 1px solid var(--hairline-gold); padding-inline-start: var(--space-5); }
+}
+
+.plate { max-width: 1320px; margin: 0 auto var(--section); }
+
+/* أجنحة المعرض */
+.wings { max-width: 1320px; margin: 0 auto var(--section); }
+.wingsHead { display: grid; gap: var(--space-3); margin-bottom: var(--space-8); }
+.wingsHead h2 { font-size: var(--step-4); margin: 0; }
+.wingsHead p { color: var(--ink-2); font-size: var(--step-1); margin: 0; }
+.wingGrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); }
+@media (min-width: 1000px) { .wingGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-7); } }
+.wing { min-width: 0; }
+.wingTitle {
+  display: flex; align-items: baseline; gap: var(--space-3);
+  font-size: var(--step-2); padding-bottom: var(--space-4); margin-bottom: 0;
+  border-bottom: 1.5px solid var(--ink);
+}
+.wingNum { font-size: var(--step-3); color: var(--petra-fill); line-height: 1; font-weight: 500; }
+.halls { list-style: none; margin: 0; padding: 0; }
 .hall {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--space-5);
-  padding: 0 var(--gutter);
+  display: grid; gap: var(--space-1);
+  padding: var(--space-5) var(--space-3); margin-inline: calc(-1 * var(--space-3));
+  position: relative;
+  transition: background var(--dur) var(--ease);
 }
-.entrance { grid-column: 1 / span 9; padding-block: var(--space-9) var(--space-7); }
-.eyebrow {
-  font-size: var(--step--1); color: var(--ink-2); letter-spacing: 0;
-  border-top: 1px solid var(--ink); display: inline-block; padding-top: var(--space-2); margin-bottom: var(--space-5);
+.hall::after { content: ""; position: absolute; inset-inline: var(--space-3); bottom: 0; height: 1px; background: var(--hairline-gold); }
+.hall:hover { background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--paper) 90%, transparent)); }
+.hallTitle { font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; line-height: 1.35; }
+.hallBody { color: var(--ink-2); font-size: var(--step--1); line-height: 1.75; }
+.soon {
+  justify-self: start; display: inline-block; margin-top: var(--space-2);
+  font-size: 0.78rem; color: var(--gold-text); border: 1px solid var(--hairline-gold);
+  border-radius: 999px; padding: 0 .7rem; line-height: 1.8; white-space: nowrap;
 }
-.title { font-size: var(--step-4); max-width: 16ch; margin-bottom: var(--space-6); }
-.lede { font-size: var(--step-1); line-height: 1.75; color: var(--ink-2); max-width: 46ch; }
 
-.rulerWrap { grid-column: 1 / -1; }
-
-.strata { grid-column: 1 / span 8; padding-block: var(--space-7); }
-.sectionTitle { font-size: var(--step-2); margin-bottom: var(--space-5); }
-.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
-.stratum {
-  display: grid; grid-template-columns: 3.5rem 1fr auto; gap: var(--space-4); align-items: baseline;
-  padding-block: var(--space-5); border-bottom: 1px solid var(--rule);
+/* زيتونة الوطن */
+.olive {
+  max-width: 1320px; margin: 0 auto var(--section);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: center;
+  background: var(--paper); border-radius: 32px; box-shadow: var(--shadow-soft);
+  padding: clamp(24px, 5vw, 72px);
+  overflow: hidden;
 }
-.stratum:nth-child(2) { padding-inline-start: var(--space-4); }
-.stratum:nth-child(3) { padding-inline-start: var(--space-6); }
-.stratum:nth-child(4) { padding-inline-start: var(--space-7); }
-.index { font-family: var(--font-display); font-size: var(--step-3); line-height: 1; color: var(--petra); }
-.hallTitle { font-size: var(--step-2); margin-bottom: var(--space-2); }
-.hallBody { color: var(--ink-2); margin: 0; }
-.state { font-size: var(--step--1); color: var(--ink-2); border: 1px dashed var(--rule-strong); padding: 0 0.5rem; white-space: nowrap; }
-
-/* لوحة تعريف متحفية */
-.label {
-  grid-column: 10 / -1; grid-row: 3; align-self: start;
-  margin-top: var(--space-7);
-  border-top: 3px solid var(--ink);
-  padding-top: var(--space-4);
-  font-size: var(--step--1);
+.branch { width: 100%; height: auto; max-width: 560px; justify-self: center; }
+.oliveText h2 { font-size: var(--step-4); margin-bottom: var(--space-4); }
+.oliveBody { font-size: var(--step-1); line-height: 1.8; color: var(--ink); }
+.oliveRule { color: var(--ink-2); font-family: var(--font-serif); font-size: var(--step-1); }
+@media (min-width: 1000px) {
+  .olive { grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+  .branch { order: 2; }
 }
-.labelTitle { font-size: var(--step-1); }
-.label ul { padding-inline-start: 1.1em; margin: 0 0 var(--space-5); }
-.label li { margin-bottom: var(--space-3); }
 
-.footer { grid-column: 1 / -1; border-top: 1px solid var(--rule); padding-block: var(--space-5); color: var(--ink-2); font-size: var(--step--1); }
-
-@media (max-width: 900px) {
-  .entrance, .strata, .label { grid-column: 1 / -1; grid-row: auto; }
-  .entrance { padding-block: var(--space-7) var(--space-5); }
-  .stratum:nth-child(n) { padding-inline-start: 0; }
-  .stratum { grid-template-columns: 2.5rem 1fr; }
-  .state { grid-column: 2; justify-self: start; }
-  .label { margin-top: 0; margin-bottom: var(--space-6); }
+/* عهد الأرشيف */
+.covenant { max-width: 1200px; margin: 0 auto var(--section); }
+.covenant h2 { font-size: var(--step-3); margin-bottom: var(--space-7); }
+.vows { list-style: none; margin: 0 0 var(--space-7); padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); gap: 0 var(--space-8); }
+.vows li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4); align-items: baseline;
+  padding: var(--space-5) 0; border-top: 1px solid var(--hairline-gold);
+  font-family: var(--font-serif); font-size: var(--step-1); line-height: 1.7;
 }
+.vowNum { font-family: var(--font-display); color: var(--petra-fill); font-size: var(--step-2); line-height: 1; min-width: 1.4em; }
+
+.footer {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6);
+  border-top: 1px solid var(--hairline-gold); padding: var(--space-6) 0 var(--space-7);
+  color: var(--ink-2); font-size: var(--step--1);
+}
+.footer p { margin: 0; }
+
+@media (prefers-reduced-motion: reduce) { .inside { margin-top: 0; } }

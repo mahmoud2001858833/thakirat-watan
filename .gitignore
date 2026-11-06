@@ -15,3 +15,4 @@ test-results/
 test-results/
 .vercel
 .env*
+.shots/

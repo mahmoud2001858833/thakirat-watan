@@ -1,0 +1,139 @@
+/* الهيرو: مرحلة ثابتة بارتفاع الشاشة داخل قسم أطول؛ --p من 0 إلى 1 مع التمرير */
+.hero {
+  --p: 0;
+  --s: calc(1 + 11 * var(--p) * var(--p) * var(--p));
+  --aw: min(62vw, 40svh);
+  --ay: 60%;
+  height: 230svh;
+  margin-top: calc(-1 * var(--header-h));
+  position: relative;
+}
+.stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: var(--hill-base); }
+
+.sceneLayer {
+  /* المشهد مثبّت على القوس: قاعدته تحت العتبة بقليل، فيبقى التكوين نفسه على كل عرض */
+  position: absolute; inset-inline: 0; top: 0; z-index: 0;
+  height: calc(var(--ay) + var(--aw) * 1.38 * 0.38 + var(--aw) * 0.05);
+  transform: scale(calc(1.04 + 0.14 * var(--p)));
+  transform-origin: 50% var(--ay);
+  will-change: transform;
+}
+
+/* الجدار: حجر جيري بمداميك رفيعة، وفتحة القوس مقصوصة بقناع */
+.wall {
+  position: absolute; inset: 0; z-index: 1;
+  background-color: var(--ivory);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='96'><g fill='none' stroke='%23a8916a' stroke-opacity='.17'><path d='M0 .5H240M0 48.5H240'/><path d='M.5 0V48M120.5 0V48M60.5 48V96M180.5 48V96'/></g></svg>"),
+    radial-gradient(120% 90% at 50% 45%, transparent 40%, rgb(181 138 60 / .08) 100%);
+  --hole: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 138' preserveAspectRatio='none'><path d='M0 138V50A50 50 0 0 1 100 50V138Z'/></svg>");
+  -webkit-mask-image: var(--hole), linear-gradient(#000, #000);
+  mask-image: var(--hole), linear-gradient(#000, #000);
+  -webkit-mask-size: calc(var(--aw) * var(--s)) calc(var(--aw) * 1.38 * var(--s)), 100% 100%;
+  mask-size: calc(var(--aw) * var(--s)) calc(var(--aw) * 1.38 * var(--s)), 100% 100%;
+  -webkit-mask-position: 50% var(--ay), 0 0;
+  mask-position: 50% var(--ay), 0 0;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* صندوق القوس يطابق الفتحة: نقطة 62% منه على var(--ay) */
+.archBox {
+  position: absolute; z-index: 2; left: 50%; top: var(--ay);
+  width: var(--aw); aspect-ratio: 100 / 138;
+  transform: translate(-50%, -62%) scale(var(--s));
+  transform-origin: 50% 62%;
+  will-change: transform;
+}
+:global([dir="rtl"]) .archBox { left: 50%; }
+
+.titleBlock, .side {
+  position: absolute; z-index: 3;
+  opacity: max(0, calc(1 - var(--p) * 4));
+  transform: translateY(calc(var(--p) * -60px));
+}
+
+/* الجوال والعمودي: العنوان فوق القوس، والساعة تحته */
+.titleBlock {
+  top: calc(var(--header-h) + 8px);
+  inset-inline: var(--gutter);
+  text-align: center;
+}
+.eyebrow {
+  margin: 0 auto var(--space-2); font-size: var(--step--1); color: var(--ink-2); max-width: none;
+  display: inline-flex; align-items: center; gap: .7em;
+}
+.eyebrow::before, .eyebrow::after { content: ""; width: 28px; height: 1px; background: var(--gold-fill); }
+.title { font-size: clamp(2.5rem, 2rem + 4vw, 3.6rem); line-height: 1.05; margin: 0; font-weight: 700; letter-spacing: 0; }
+.lede { display: none; }
+
+.side {
+  inset-inline: var(--gutter);
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: grid; justify-items: center; gap: var(--space-2);
+}
+.meta { display: grid; justify-items: center; gap: var(--space-2); }
+.clock { margin: 0; font-size: var(--step--1); color: var(--ink-2); display: flex; gap: .45em; flex-wrap: wrap; justify-content: center; }
+.time { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+.phases {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
+  padding: 4px; border-radius: 999px; background: color-mix(in srgb, var(--paper) 85%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+.phaseBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 40px; min-width: 44px; padding: 0 12px;
+  font: inherit; font-size: var(--step--1); color: var(--ink-2);
+  border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.phaseBtn:hover { color: var(--ink); }
+.phaseBtn[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.dot { width: 9px; height: 9px; border-radius: 50%; }
+.dot[data-p="dawn"] { background: #e5aaa3; }
+.dot[data-p="day"] { background: #e8b54f; }
+.dot[data-p="dusk"] { background: #e38a6c; }
+.dot[data-p="night"] { background: #3b5591; }
+.cue { display: none; }
+
+@media (max-height: 700px) and (orientation: portrait) {
+  .hero { --aw: min(56vw, 36svh); }
+  .clock { display: none; }
+}
+
+/* سطح المكتب والأفقي: العنوان على يمين الجدار، والساعة على يساره */
+@media (min-width: 900px) and (orientation: landscape) {
+  .hero { --aw: min(46vw, 46svh); --ay: 58%; }
+  .titleBlock {
+    top: 50%; bottom: auto; inset-inline-start: var(--gutter); inset-inline-end: auto;
+    width: calc(50% - var(--aw) * 0.66 - var(--gutter) - 40px);
+    max-width: 460px;
+    text-align: start;
+    transform: translateY(calc(-50% + var(--p) * -60px));
+  }
+  .eyebrow { margin-inline: 0; }
+  .eyebrow::after { display: none; }
+  .title { font-size: clamp(3rem, 1rem + 4.6vw, 6.2rem); }
+  .lede { display: block; font-family: var(--font-serif); font-size: var(--step-1); line-height: 1.7; color: var(--ink-2); margin-top: var(--space-5); }
+  .side {
+    inset-inline-start: auto; inset-inline-end: var(--gutter); bottom: auto; top: 50%;
+    width: calc(50% - var(--aw) * 0.66 - var(--gutter) - 40px);
+    max-width: 360px;
+    justify-items: end;
+    transform: translateY(calc(-50% + var(--p) * -60px));
+  }
+  .meta { justify-items: end; }
+  .clock { justify-content: flex-end; }
+  .phases { justify-content: flex-end; }
+  .cue {
+    display: inline-flex; align-items: center; gap: var(--space-3);
+    margin-top: var(--space-5); color: var(--ink); font-weight: 600; text-decoration: none; min-height: 44px;
+  }
+  .cueLine { width: 48px; height: 1px; background: var(--ink); transition: width var(--dur) var(--ease); }
+  .cue:hover .cueLine { width: 72px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: 100svh; }
+  .sceneLayer, .archBox { will-change: auto; }
+}
