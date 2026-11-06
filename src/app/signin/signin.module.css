@@ -1,0 +1,4 @@
+.wrap { padding: var(--space-8) var(--gutter); display: grid; }
+.panel { max-width: 34rem; }
+.title { font-size: var(--step-3); }
+.lede { color: var(--ink-2); }

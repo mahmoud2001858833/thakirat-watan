@@ -1,0 +1,15 @@
+.badge {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  font-size: var(--step--1); font-weight: 600; line-height: 1.4;
+  padding: 0.1rem 0.6rem; border: 1px solid currentColor; border-radius: 999px; white-space: nowrap;
+}
+.glyph { font-size: 0.8em; }
+.official_document { color: var(--ajloun); }
+.personal_testimony { color: var(--ochre); }
+.circulated_account { color: var(--petra); }
+.under_review { color: var(--neutral); border-style: dashed; }
+.note { font-weight: 400; }
+.demo {
+  display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--ink-2);
+  border: 1px dashed var(--ink-2); padding: 0 0.45rem; line-height: 1.6; letter-spacing: 0;
+}

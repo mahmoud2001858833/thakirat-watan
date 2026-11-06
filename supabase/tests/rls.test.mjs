@@ -196,3 +196,14 @@ test('حد المعدل يمنع تخمين رموز الصفوف', async () => 
   await fails(U.other, `select public.join_class($1, 'اسم')`, [classA.join_code], /too many attempts/);
   assert.equal((await rows(U.other, `select count(*)::int n from public.class_members`))[0].n, 0);
 });
+
+test('قائمة المستخدمين للمدير فقط', async () => {
+  assert.ok((await rows(U.admin, `select * from public.admin_list_users(null, 50)`)).length >= 8);
+  await fails(U.reviewer, `select * from public.admin_list_users(null, 50)`, [], /not allowed/);
+  await fails(null, `select * from public.admin_list_users(null, 50)`, [], /permission denied/);
+});
+
+test('بريد القاصر لا يظهر حتى للمدير', async () => {
+  const r = await rows(U.admin, `select email from public.admin_list_users(null, 200) where id = $1`, [U.student]);
+  assert.equal(r[0].email, null);
+});

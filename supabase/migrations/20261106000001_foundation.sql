@@ -21,7 +21,7 @@ create or replace function public.ar_normalize(t text)
 returns text language sql immutable parallel safe set search_path = '' as $$
   select lower(
     translate(
-      regexp_replace(coalesce(t, ''), '[ً-ٰٟـ]', '', 'g'),
+      regexp_replace(coalesce(t, ''), '[\u064B-\u065F\u0670\u0640]', '', 'g'),
       'أإآٱةىؤئ٠١٢٣٤٥٦٧٨٩',
       'ااااهيوي0123456789'
     )

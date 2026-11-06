@@ -1,0 +1,5 @@
+.wrap { padding: var(--space-7) var(--gutter); }
+.bar { display: block; height: 1px; width: 100%; max-width: 30rem; background: var(--rule-strong); position: relative; overflow: hidden; }
+.bar::after { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 30%; background: var(--petra); animation: slide 1.4s var(--ease-settle) infinite; }
+@keyframes slide { from { transform: translateX(0); } to { transform: translateX(-340%); } }
+@media (prefers-reduced-motion: reduce) { .bar::after { animation: none; width: 100%; opacity: .5; } }
