@@ -1,0 +1,16 @@
+{
+  "name": "thakirat-watan",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test:db": "node --test supabase/tests/*.test.mjs",
+    "contrast": "node scripts/contrast.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.16"
+  }
+}
