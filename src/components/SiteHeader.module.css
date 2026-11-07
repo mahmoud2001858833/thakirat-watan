@@ -48,3 +48,5 @@
 
 /* في الصفحة الرئيسية يحمل الهيرو الاسم؛ لا نكرره في الترويسة */
 :global(body:has(#window)) .mark { visibility: hidden; }
+
+@media (max-width: 1080px) { .wide { display: none; } }

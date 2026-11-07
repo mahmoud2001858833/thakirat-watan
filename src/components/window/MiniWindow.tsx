@@ -1,4 +1,4 @@
-import { JordanScene } from './JordanScene';
+import { PhotoScene } from './PhotoScene';
 import { ArchFrame } from './ArchFrame';
 import s from './mini.module.css';
 
@@ -6,7 +6,7 @@ import s from './mini.module.css';
 export function MiniWindow({ className = '' }: { className?: string }) {
   return (
     <div className={`${s.box} ${className}`} aria-hidden="true">
-      <div className={s.opening}><JordanScene /></div>
+      <div className={s.opening}><PhotoScene sizes="(max-width: 900px) 50vw, 400px" /></div>
       <ArchFrame />
     </div>
   );

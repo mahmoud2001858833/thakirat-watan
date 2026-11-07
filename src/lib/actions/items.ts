@@ -27,7 +27,11 @@ const base = z.object({
   rights_holder: opt(300),
   rights_note: opt(1000),
 });
-const staffFields = z.object({ trust: z.enum(trusts), rights: z.enum(rights) });
+const staffFields = z.object({
+  trust: z.enum(trusts), rights: z.enum(rights),
+  is_event: z.literal('on').optional().transform((v) => v === 'on'),
+  date_exact: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).or(z.literal('')).optional().transform((v) => v || null),
+}).transform((v) => ({ ...v, date_precision: v.date_exact ? ('day' as const) : null }));
 
 const where = (form: FormData) => (form.get('return') === 'admin' ? '/admin/items' : '/studio/items');
 const fail = (path: string, msg?: string) => redirect(`${path}?error=${encodeURIComponent(msg ?? '')}`);
@@ -48,8 +52,9 @@ export async function createItem(form: FormData) {
 export async function updateItem(id: string, form: FormData) {
   const path = `${where(form)}/${id}`;
   const v = await getViewer();
-  const schema = isStaff(v) ? base.merge(staffFields) : base;
-  const parsed = schema.safeParse(Object.fromEntries(form));
+  const raw = Object.fromEntries(form);
+  const b = base.safeParse(raw), st = isStaff(v) ? staffFields.safeParse(raw) : null;
+  const parsed = b.success && (!st || st.success) ? { success: true as const, data: { ...b.data, ...(st?.success ? st.data : {}) } } : { success: false as const, data: null };
   if (!parsed.success) fail(path, 'violates check constraint');
   const supabase = await createClient();
   const { data, error } = await supabase.from('items').update(parsed.data!).eq('id', id).select('id');

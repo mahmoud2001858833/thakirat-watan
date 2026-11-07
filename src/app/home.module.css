@@ -42,55 +42,39 @@
   .legendItem + .legendItem { border-inline-start: 1px solid var(--hairline-gold); padding-inline-start: var(--space-5); }
 }
 
+
+
+/* القاعات المفتوحة: صفوف متناوبة بصور كبيرة */
+.halls { max-width: 1320px; margin: 0 auto var(--section); }
+.hallsHead { display: grid; gap: var(--space-3); margin-bottom: var(--space-8); }
+.hallsHead h2 { font-size: var(--step-4); margin: 0; }
+.hallsHead p { color: var(--ink-2); font-size: var(--step-1); margin: 0; }
+.hallList { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(56px, 8vw, 128px); }
+.hallLink { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; color: inherit; text-decoration: none; }
+.hall:nth-child(even) .hallLink { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); }
+.hall:nth-child(even) .hallImgWrap { order: 2; }
+.hallImgWrap { display: block; overflow: hidden; border-radius: 22px; box-shadow: var(--shadow-lift); aspect-ratio: 4 / 3; }
+.hallImg { width: 100%; height: 100%; object-fit: cover; transition: transform 1200ms var(--ease); }
+.hallLink:hover .hallImg { transform: scale(1.04); }
+.hallText { display: grid; gap: var(--space-3); }
+.hallNum { font-family: var(--font-display); font-size: var(--step-4); color: var(--petra-fill); line-height: 1; }
+.hallTitle { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.15; }
+.hallBody { color: var(--ink-2); font-size: var(--step-1); line-height: 1.75; }
+.hallStat { font-family: var(--font-display); color: var(--olive-text); font-size: var(--step-1); }
+.hallGo { color: var(--petra-text); font-weight: 600; }
+.hallLink:hover .hallGo { text-decoration: underline; }
+.hallCredit { font-size: 0.75rem; color: var(--ink-2); margin: var(--space-2) 0 0; }
+.hallCredit a { color: inherit; }
+@media (max-width: 900px) {
+  .hallLink, .hall:nth-child(even) .hallLink { grid-template-columns: minmax(0, 1fr); }
+  .hall:nth-child(even) .hallImgWrap { order: 0; }
+}
+
+/* لوحة الافتتاح: صورة حقيقية كبيرة */
 .plate { max-width: 1320px; margin: 0 auto var(--section); }
-
-/* أجنحة المعرض */
-.wings { max-width: 1320px; margin: 0 auto var(--section); }
-.wingsHead { display: grid; gap: var(--space-3); margin-bottom: var(--space-8); }
-.wingsHead h2 { font-size: var(--step-4); margin: 0; }
-.wingsHead p { color: var(--ink-2); font-size: var(--step-1); margin: 0; }
-.wingGrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); }
-@media (min-width: 1000px) { .wingGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-7); } }
-.wing { min-width: 0; }
-.wingTitle {
-  display: flex; align-items: baseline; gap: var(--space-3);
-  font-size: var(--step-2); padding-bottom: var(--space-4); margin-bottom: 0;
-  border-bottom: 1.5px solid var(--ink);
-}
-.wingNum { font-size: var(--step-3); color: var(--petra-fill); line-height: 1; font-weight: 500; }
-.halls { list-style: none; margin: 0; padding: 0; }
-.hall {
-  display: grid; gap: var(--space-1);
-  padding: var(--space-5) var(--space-3); margin-inline: calc(-1 * var(--space-3));
-  position: relative;
-  transition: background var(--dur) var(--ease);
-}
-.hall::after { content: ""; position: absolute; inset-inline: var(--space-3); bottom: 0; height: 1px; background: var(--hairline-gold); }
-.hall:hover { background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--paper) 90%, transparent)); }
-.hallTitle { font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; line-height: 1.35; }
-.hallBody { color: var(--ink-2); font-size: var(--step--1); line-height: 1.75; }
-.soon {
-  justify-self: start; display: inline-block; margin-top: var(--space-2);
-  font-size: 0.78rem; color: var(--gold-text); border: 1px solid var(--hairline-gold);
-  border-radius: 999px; padding: 0 .7rem; line-height: 1.8; white-space: nowrap;
-}
-
-/* زيتونة الوطن */
-.olive {
-  max-width: 1320px; margin: 0 auto var(--section);
-  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: center;
-  background: var(--paper); border-radius: 32px; box-shadow: var(--shadow-soft);
-  padding: clamp(24px, 5vw, 72px);
-  overflow: hidden;
-}
-.branch { width: 100%; height: auto; max-width: 560px; justify-self: center; }
-.oliveText h2 { font-size: var(--step-4); margin-bottom: var(--space-4); }
-.oliveBody { font-size: var(--step-1); line-height: 1.8; color: var(--ink); }
-.oliveRule { color: var(--ink-2); font-family: var(--font-serif); font-size: var(--step-1); }
-@media (min-width: 1000px) {
-  .olive { grid-template-columns: 1fr 1fr; gap: var(--space-8); }
-  .branch { order: 2; }
-}
+.plateImg { width: 100%; height: auto; border-radius: 26px; box-shadow: var(--shadow-lift); }
+.plateCap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-5); margin-top: var(--space-3); font-size: var(--step--1); color: var(--ink-2); }
+.plateCap a { color: inherit; }
 
 /* عهد الأرشيف */
 .covenant { max-width: 1200px; margin: 0 auto var(--section); }

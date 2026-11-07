@@ -52,6 +52,18 @@ export function ItemFields({ item, staff, locked }: { item?: Partial<ItemRow>; s
       </div>
       {staff && (
         <div className="field-row staff-only">
+          <div className="field check">
+            <input id="is_event" name="is_event" type="checkbox" defaultChecked={item?.is_event ?? false} />
+            <label htmlFor="is_event">حدث يظهر في «هذا اليوم في الأردن»</label>
+          </div>
+          <div className="field">
+            <label htmlFor="date_exact">التاريخ الدقيق <span className="hint">للأحداث: اليوم والشهر والسنة</span></label>
+            <input id="date_exact" name="date_exact" type="date" defaultValue={item?.date_exact ?? ''} />
+          </div>
+        </div>
+      )}
+      {staff && (
+        <div className="field-row staff-only">
           <div className="field">
             <label htmlFor="trust">درجة التوثيق</label>
             <select id="trust" name="trust" defaultValue={item?.trust ?? 'under_review'}>

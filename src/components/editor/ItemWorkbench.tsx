@@ -4,10 +4,13 @@ import { addConsent, addSource, removeSource, transition, updateItem, withdrawCo
 import { TrustBadge, DemoTag } from '@/components/TrustBadge';
 import { ItemFields } from './ItemFields';
 import type { ConsentRow, EventRow, ItemRow, SourceLink } from './types';
+import Image from 'next/image';
+import { mediaSrc, type Media } from '@/lib/media';
+import { Credit } from '@/components/archive/Credit';
 import s from './workbench.module.css';
 
 type Props = {
-  item: ItemRow; sources: SourceLink[]; consents: ConsentRow[]; events: EventRow[];
+  item: ItemRow; sources: SourceLink[]; consents: ConsentRow[]; events: EventRow[]; media?: Media[];
   mode: 'studio' | 'admin'; staff: boolean; isAdmin: boolean; isOwner: boolean;
   children?: React.ReactNode;
 };
@@ -27,7 +30,7 @@ const staffMoves: Record<string, Move[]> = {
   rejected: [],
 };
 
-export function ItemWorkbench({ item, sources, consents, events, mode, staff, isAdmin, isOwner, children }: Props) {
+export function ItemWorkbench({ item, sources, consents, events, media = [], mode, staff, isAdmin, isOwner, children }: Props) {
   const t = getDict();
   const editable = staff || (isOwner && (item.status === 'draft' || item.status === 'rejected'));
   const moves: Move[] = [
@@ -45,6 +48,15 @@ export function ItemWorkbench({ item, sources, consents, events, mode, staff, is
   return (
     <div className={s.bench}>
       <div className={s.main}>
+        {item.provenance === 'assistant_research' && (
+          <p className="notice">أعدّ المساعد هذه المادة من مصادر مفتوحة. راجع النص والمصادر وحقوق الصورة، ثم حدّد درجة التوثيق.</p>
+        )}
+        {media.map((m, i) => m.width && m.height ? (
+          <figure key={i} style={{ margin: '0 0 var(--space-5)' }}>
+            <Image src={mediaSrc(m)} alt={m.alt_ar ?? ''} width={m.width} height={m.height} sizes="46rem" style={{ width: '100%', height: 'auto', borderRadius: 10 }} />
+            <figcaption className="hint"><Credit m={m} /></figcaption>
+          </figure>
+        ) : null)}
         <form action={updateItem.bind(null, item.id)}>
           <input type="hidden" name="return" value={mode} />
           <ItemFields item={item} staff={staff} locked={!editable} />

@@ -8,6 +8,7 @@ export type ItemRow = {
   year_start: number | null; year_end: number | null;
   contributor_public_name: string | null; is_student_work: boolean; is_demo: boolean;
   reject_reason: string | null; contributor_id: string | null; created_at: string; updated_at: string;
+  is_event?: boolean; date_exact?: string | null; provenance?: string;
 };
 export type SourceLink = { locator: string | null; sources: { id: string; kind: string; citation: string; url: string | null; archive_ref: string | null } };
 export type ConsentRow = { id: string; subject_name_private: string; method: string; consent_text_version: string; given_at: string; withdrawn_at: string | null };

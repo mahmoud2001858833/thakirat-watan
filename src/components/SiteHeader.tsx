@@ -28,6 +28,9 @@ export function SiteHeader() {
       </Link>
       <nav aria-label={t.nav.main} className={s.nav}>
         <ul>
+          <li className={s.wide}><Link href="/archive">الأرشيف</Link></li>
+          <li className={s.wide}><Link href="/olive">زيتونة الوطن</Link></li>
+          <li className={s.wide}><Link href="/this-day">هذا اليوم</Link></li>
           <Suspense fallback={<li aria-hidden="true" className={s.placeholder} />}>
             <UserNav />
           </Suspense>

@@ -1,0 +1,33 @@
+.scene { position: absolute; inset: 0; overflow: hidden; background: #2a2420; }
+.phase { position: absolute; inset: 0; display: none; }
+/* الوقت الحالي فقط ظاهر (ويُحمَّل) — الافتراضي الظهيرة إلى أن يحدد السكربت الوقت */
+:global(html:not([data-phase])) .phase[data-phase="day"],
+:global(html[data-phase="dawn"]) .phase[data-phase="dawn"],
+:global(html[data-phase="day"]) .phase[data-phase="day"],
+:global(html[data-phase="dusk"]) .phase[data-phase="dusk"],
+:global(html[data-phase="night"]) .phase[data-phase="night"] { display: block; animation: phaseIn 1800ms var(--ease) both; }
+@keyframes phaseIn { from { opacity: 0; } to { opacity: 1; } }
+
+.slide { position: absolute; inset: 0; }
+.img { object-fit: cover; animation: kenburns 38s ease-in-out infinite alternate; transform-origin: 50% 60%; }
+@keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14) translate3d(-1.5%, -1%, 0); } }
+/* صورتان في الوقت نفسه: تلاشٍ متبادل كل 14 ثانية */
+.phase[data-count="2"] .slide { animation: swap 28s ease-in-out infinite; }
+.phase[data-count="2"] .slide[data-i="1"] { animation-delay: -14s; }
+@keyframes swap { 0%, 42% { opacity: 1; } 50%, 92% { opacity: 0; } 100% { opacity: 1; } }
+
+.vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(20 16 12 / .35)); }
+
+.credits { margin: 0; font-size: 0.75rem; color: var(--ink-2); }
+.credits a { color: inherit; }
+.creditSet { display: none; }
+:global(html:not([data-phase])) .creditSet[data-phase="day"],
+:global(html[data-phase="dawn"]) .creditSet[data-phase="dawn"],
+:global(html[data-phase="day"]) .creditSet[data-phase="day"],
+:global(html[data-phase="dusk"]) .creditSet[data-phase="dusk"],
+:global(html[data-phase="night"]) .creditSet[data-phase="night"] { display: inline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .img, .phase[data-count="2"] .slide { animation: none; }
+  .phase[data-count="2"] .slide[data-i="1"] { display: none; }
+}

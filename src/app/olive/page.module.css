@@ -1,0 +1,5 @@
+.page { padding: var(--space-7) var(--gutter) var(--section); max-width: 1440px; margin-inline: auto; }
+.head { max-width: 54rem; margin-bottom: var(--space-6); }
+.head h1 { font-size: var(--step-5); line-height: 1.02; }
+.kicker { color: var(--gold-text); font-weight: 600; font-size: var(--step--1); margin-bottom: var(--space-6); }
+.lede { font-family: var(--font-serif); font-size: var(--step-1); color: var(--ink-2); line-height: 1.75; }

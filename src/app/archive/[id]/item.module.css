@@ -1,0 +1,23 @@
+.page { padding: var(--space-6) var(--gutter) var(--section); max-width: 1500px; margin-inline: auto; }
+.crumb { color: var(--ink-2); font-size: var(--step--1); margin-bottom: var(--space-5); }
+.exhibit { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+.figure { margin: 0; position: sticky; top: var(--space-4); }
+.img { width: 100%; height: auto; max-height: 82svh; object-fit: contain; object-position: center; border-radius: 8px; box-shadow: var(--shadow-lift); background: var(--sand); }
+.cap { margin-top: var(--space-3); font-size: var(--step--1); color: var(--ink-2); }
+.label { border-top: 3px solid var(--ink); padding-top: var(--space-5); }
+.badges { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+.note { font-size: var(--step--1); color: var(--gold-text); border-inline-start: 2px solid var(--gold-fill); padding-inline-start: var(--space-3); }
+.title { font-size: var(--step-3); line-height: 1.15; margin: var(--space-4) 0; }
+.summary { font-family: var(--font-serif); font-size: var(--step-1); line-height: 1.8; }
+.dl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-5); margin: var(--space-5) 0; font-size: var(--step--1); }
+.dl dt { color: var(--ink-2); }
+.dl dd { margin: 0; }
+.h2 { font-size: var(--step-1); margin-top: var(--space-6); }
+.sources { padding-inline-start: 1.2em; font-size: var(--step--1); }
+.sources li { margin-bottom: var(--space-2); overflow-wrap: anywhere; }
+.locator { color: var(--ink-2); }
+.report { margin-top: var(--space-6); border-top: 1px solid var(--line); padding-top: var(--space-4); }
+.report summary { cursor: pointer; color: var(--petra-text); min-height: 44px; display: flex; align-items: center; }
+.related { margin-top: var(--section); }
+.related h2 { font-size: var(--step-2); margin-bottom: var(--space-6); }
+@media (max-width: 1000px) { .exhibit { grid-template-columns: minmax(0, 1fr); } .figure { position: static; } }

@@ -8,12 +8,12 @@
   margin-top: calc(-1 * var(--header-h));
   position: relative;
 }
-.stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: var(--hill-base); }
+.stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: #2a2420; }
 
 .sceneLayer {
   /* المشهد مثبّت على القوس: قاعدته تحت العتبة بقليل، فيبقى التكوين نفسه على كل عرض */
   position: absolute; inset-inline: 0; top: 0; z-index: 0;
-  height: calc(var(--ay) + var(--aw) * 1.38 * 0.38 + var(--aw) * 0.05);
+  height: 100%;
   transform: scale(calc(1.04 + 0.14 * var(--p)));
   transform-origin: 50% var(--ay);
   will-change: transform;
@@ -137,3 +137,6 @@
   .hero { height: 100svh; }
   .sceneLayer, .archBox { will-change: auto; }
 }
+
+.photoCredit { max-width: 32ch; text-align: center; }
+@media (min-width: 900px) and (orientation: landscape) { .photoCredit { text-align: end; } }

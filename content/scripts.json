@@ -1,0 +1,27 @@
+{
+ "sources": {
+  "aljallad": {"kind":"publication","citation":"Ahmad Al-Jallad (2015). An Outline of the Grammar of the Safaitic Inscriptions. Leiden: Brill (Studies in Semitic Languages and Linguistics 80)، جدول الحروف ص 37–40.","url":"https://oeaw.ac.at/resources/Record/5002006482"},
+  "unicode-ona": {"kind":"institution","citation":"The Unicode Standard — Old North Arabian (U+10A80–U+10A9F)، جدول الرموز الرسمي.","url":"https://www.unicode.org/charts/PDF/U10A80.pdf"},
+  "unicode-nab": {"kind":"institution","citation":"The Unicode Standard — Nabataean (U+10880–U+108AF)، جدول الرموز الرسمي.","url":"https://www.unicode.org/charts/PDF/U10880.pdf"},
+  "unicode-phn": {"kind":"institution","citation":"The Unicode Standard — Phoenician (U+10900–U+1091F)، جدول الرموز الرسمي.","url":"https://www.unicode.org/charts/PDF/U10900.pdf"},
+  "wiki-nab": {"kind":"web","citation":"ويكيبيديا: Nabataean script — جدول مقارنة الحروف النبطية بالعربية.","url":"https://en.wikipedia.org/wiki/Nabataean_script"},
+  "wiki-mesha": {"kind":"web","citation":"ويكيبيديا: Mesha Stele — نقش ميشع مكتوب بأبجدية متفرعة من الفينيقية.","url":"https://en.wikipedia.org/wiki/Mesha_Stele"},
+  "wiki-safaitic": {"kind":"web","citation":"ويكيبيديا: Safaitic — جدول الحروف ومقابلاتها العربية (عن الجلاد 2015).","url":"https://en.wikipedia.org/wiki/Safaitic"}
+ },
+ "safaitic": {"source":"aljallad","letters":[
+  [68241,"ʾ","ا,أ,إ,آ,ء,ئ,ؤ"],[68232,"b","ب"],[68233,"t","ت,ة"],[68251,"ṯ","ث"],[68244,"g","ج"],[68226,"ḥ","ح"],[68237,"ḫ","خ"],
+  [68245,"d","د"],[68249,"ḏ","ذ"],[68231,"r","ر"],[68248,"z","ز"],[68234,"s¹","س"],[68230,"s²","ش"],[68238,"ṣ","ص"],
+  [68243,"ḍ","ض"],[68247,"ṭ","ط"],[68252,"ẓ","ظ"],[68242,"ʿ","ع"],[68246,"ġ","غ"],[68240,"f","ف"],[68228,"q","ق"],
+  [68235,"k","ك"],[68225,"l","ل"],[68227,"m","م"],[68236,"n","ن"],[68224,"h","ه"],[68229,"w","و"],[68250,"y","ي,ى"]
+ ]},
+ "nabataean": {"source":"wiki-nab","letters":[
+  [67713,"ʾ","ا,أ,إ,آ,ء,ئ,ؤ"],[67715,"b","ب"],[67716,"g","ج"],[67717,"d","د,ذ"],[67719,"h","ه,ة"],[67720,"w","و"],[67721,"z","ز"],
+  [67722,"ḥ","ح,خ"],[67723,"ṭ","ط,ظ"],[67725,"y","ي,ى"],[67727,"k","ك"],[67729,"l","ل"],[67731,"m","م"],[67733,"n","ن"],
+  [67734,"s","س"],[67735,"ʿ","ع,غ"],[67736,"p","ف"],[67737,"ṣ","ص,ض"],[67738,"q","ق"],[67739,"r","ر"],[67741,"š","ش"],[67742,"t","ت,ث"]
+ ]},
+ "moabite": {"source":"wiki-mesha","letters":[
+  [67840,"ʾ","ا,أ,إ,آ,ء,ئ,ؤ"],[67841,"b","ب"],[67842,"g","ج"],[67843,"d","د,ذ"],[67844,"h","ه,ة"],[67845,"w","و"],[67846,"z","ز"],
+  [67847,"ḥ","ح,خ"],[67848,"ṭ","ط,ظ"],[67849,"y","ي,ى"],[67850,"k","ك"],[67851,"l","ل"],[67852,"m","م"],[67853,"n","ن"],
+  [67854,"s","س"],[67855,"ʿ","ع,غ"],[67856,"p","ف"],[67857,"ṣ","ص,ض"],[67858,"q","ق"],[67859,"r","ر"],[67860,"š","ش"],[67861,"t","ت,ث"]
+ ]}
+}

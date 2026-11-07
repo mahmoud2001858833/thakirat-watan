@@ -1,0 +1,41 @@
+.explorer { display: grid; gap: var(--space-4); position: relative; }
+.bar { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-3) var(--space-6); }
+.counter { display: flex; align-items: baseline; gap: var(--space-3); }
+.count { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--olive-text); font-variant-numeric: tabular-nums; }
+.countLabel { color: var(--ink-2); }
+.season { margin: 0; color: var(--gold-text); font-size: var(--step--1); }
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.filters select { width: auto; min-height: 46px; }
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 11; max-height: 82svh; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow-lift); background: #efe6d2; }
+.canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.canvas:active { cursor: grabbing; }
+.zoom { position: absolute; inset-inline-start: var(--space-3); bottom: var(--space-3); display: grid; gap: 6px; }
+.zoom button { width: 44px; height: 44px; border-radius: 50%; border: 0; background: color-mix(in srgb, var(--paper) 90%, transparent); box-shadow: var(--shadow-soft); font-size: 1.3rem; cursor: pointer; color: var(--ink); }
+.loadingNote { position: absolute; top: var(--space-3); inset-inline-end: var(--space-4); margin: 0; font-size: var(--step--1); color: var(--ink-2); }
+.legend { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.legend button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font: inherit; font-size: var(--step--1); color: var(--ink); cursor: pointer; }
+.legend button[aria-pressed="true"] { border-color: var(--ink); box-shadow: var(--shadow-soft); }
+.swatch { width: 12px; height: 12px; border-radius: 50%; }
+.sheet {
+  position: absolute; inset-inline-end: clamp(12px, 3vw, 32px); top: clamp(120px, 14vw, 170px); width: min(26rem, calc(100% - 24px)); z-index: 5;
+  background: var(--paper); border-radius: 22px; box-shadow: var(--shadow-lift); padding: var(--space-5); animation: rise 500ms var(--ease) both;
+}
+.close { position: absolute; inset-inline-end: 10px; top: 8px; width: 44px; height: 44px; border: 0; background: transparent; font-size: 1.6rem; cursor: pointer; color: var(--ink-2); }
+.sheetGov { color: var(--olive-text); font-weight: 600; margin: 0 0 var(--space-3); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.demo { font-size: 0.75rem; color: var(--ink-2); border: 1px dashed var(--ink-2); padding: 0 .45rem; border-radius: 4px; }
+.quote { margin: 0 0 var(--space-3); font-family: var(--font-serif); font-size: var(--step-1); line-height: 1.8; overflow-wrap: anywhere; }
+.sheetMeta { color: var(--ink-2); font-size: var(--step--1); }
+.lower { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); margin-top: var(--space-6); }
+.plant, .read { min-width: 0; }
+.plant h2, .read h2 { font-size: var(--step-2); }
+.leafList { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2); }
+.leafList button { width: 100%; text-align: start; display: grid; gap: 2px; padding: var(--space-3) var(--space-4); border: 0; border-inline-start: 3px solid var(--olive-fill); background: var(--paper); border-radius: 10px; font: inherit; color: var(--ink); cursor: pointer; }
+.leafList button:hover { box-shadow: var(--shadow-soft); }
+.leafBody { font-family: var(--font-serif); font-size: var(--step-0); line-height: 1.6; overflow-wrap: anywhere; }
+.leafMeta { font-size: var(--step--1); color: var(--ink-2); }
+.pager { display: flex; align-items: center; justify-content: center; gap: var(--space-3); margin-top: var(--space-3); }
+@media (max-width: 860px) {
+  .stage { aspect-ratio: 3 / 4; }
+  .lower { grid-template-columns: minmax(0, 1fr); }
+  .sheet { position: fixed; inset-inline: 12px; top: auto; bottom: 12px; width: auto; }
+}

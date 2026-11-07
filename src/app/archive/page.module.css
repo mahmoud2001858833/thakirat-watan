@@ -1,0 +1,12 @@
+.page { padding: var(--space-7) var(--gutter) var(--section); max-width: 1440px; margin-inline: auto; }
+.head { max-width: 52rem; margin-bottom: var(--space-7); }
+.head h1 { font-size: var(--step-5); line-height: 1; margin-bottom: var(--space-5); }
+.kicker { color: var(--gold-text); font-weight: 600; font-size: var(--step--1); margin-bottom: var(--space-6); }
+.lede { font-family: var(--font-serif); font-size: var(--step-1); color: var(--ink-2); line-height: 1.75; }
+.search { background: var(--paper); border-radius: 24px; box-shadow: var(--shadow-soft); padding: clamp(18px, 3vw, 32px); margin-bottom: var(--space-6); }
+.qField input { font-size: var(--step-1); min-height: 58px; }
+.qField { margin-bottom: var(--space-4); }
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); gap: 0 var(--space-4); align-items: end; }
+.filters :global(.field) { margin-bottom: var(--space-4); }
+.filters :global(.btn) { margin-bottom: var(--space-4); }
+.count { color: var(--ink-2); margin-bottom: var(--space-6); }

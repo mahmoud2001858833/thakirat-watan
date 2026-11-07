@@ -1,0 +1,20 @@
+{
+ "sources": [
+  {"key":"getty-levels","citation":"Getty Conservation Institute — Technician Training for the Conservation of Mosaics: Different Levels of Conservation Treatment.","url":"https://www.getty.edu/conservation/publications_resources/teaching/pdf/mosaics_conservation/mosaics_different_levels_of_conservation_treatment.pdf"},
+  {"key":"getty-planning","citation":"Getty Conservation Institute — Technician Training for the Conservation of Mosaics: Intervention Planning and Documentation.","url":"https://www.getty.edu/conservation/publications_resources/teaching/pdf/mosaics_conservation/mosaics_intervention_planning_and_documentation.pdf"},
+  {"key":"getty-course","citation":"Getty Conservation Institute — La Conservation de Mosaïques (منهج تدريب الفنيين: التدهور، التوثيق، التنظيف، ملاط الترميم، التثبيت، تصريف المياه، الردم).","url":"https://www.getty.edu/research-conservation/teaching-learning-resources/la-conservation-de-mosaiques"},
+  {"key":"mosaikon","citation":"MOSAIKON — مبادرة إقليمية بدأت عام 2008 لتحسين حفظ الفسيفساء وعرضها وإدارتها في جنوب المتوسط وشرقه.","url":"https://www.getty.edu/conservation/our_projects/education/mosaikon/index.html"}
+ ],
+ "steps": [
+  {"title":"الدراسة الأولية","body":"قبل لمس أي قطعة يدرس المرمم تاريخ الموقع ويحدد طريقة بناء الفسيفساء: طبقات الملاط تحتها، وحجم المكعبات، ومادتها.","source":"getty-levels"},
+  {"title":"التوثيق وتخطيط التدخل","body":"تُصوَّر الأرضية وتُرسم، وتُسجَّل الأضرار في نماذج موحّدة، ويُقرَّر أين يلزم تدخل مختص.","source":"getty-planning"},
+  {"title":"التنظيف","body":"تُزال الأتربة والنباتات والرواسب بحذر، لأن التنظيف الخاطئ قد يقتلع المكعبات.","source":"getty-course"},
+  {"title":"التثبيت بأقل تدخل","body":"الهدف إعادة السلامة البنيوية للوحة بأقل تدخل ممكن، بملاط ترميم يثبّت المكعبات المرتخية وحواف الفجوات.","source":"getty-levels"},
+  {"title":"الحماية والمراقبة","body":"يُصرَّف الماء عن الأرضية، وقد تُردم وقائياً، ثم تدخل دورة صيانة من المراقبة والوقاية.","source":"getty-course"}
+ ],
+ "mosaics": [
+  {"slug":"madaba-map","visual":"mosaic-madaba","item":"madaba-map","grid":4,"title_ar":"خارطة مادبا","summary_ar":"جزء من أرضية فسيفسائية في كنيسة القديس جاورجيوس البيزنطية المبكرة في مادبا. الصورة لنسخة مطابقة من الخارطة."},
+  {"slug":"umm-ar-rasas","visual":"mosaic-rasas","item":"umm-rasas-mosaic","grid":5,"title_ar":"فسيفساء أم الرصاص","summary_ar":"من فسيفساء موقع أم الرصاص، على 30 كيلومتراً جنوب شرق مادبا، المدرج على قائمة التراث العالمي لليونسكو منذ 2004."},
+  {"slug":"petra-church","visual":"mosaic-petra","item":"petra-church-mosaic","grid":6,"title_ar":"فسيفساء كنيسة البترا","summary_ar":"من أرضيات الكنيسة البيزنطية في وسط البترا، شمال الشارع المعمّد."}
+ ]
+}
