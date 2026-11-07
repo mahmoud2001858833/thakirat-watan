@@ -12,9 +12,12 @@ async function UserNav() {
   const t = getDict();
   const v = await getViewer();
   if (!v) return <li><Link href="/signin">{t.nav.signIn}</Link></li>;
-  const items: { href: string; label: string }[] = [{ href: '/studio', label: t.nav.studio }];
+  const items: { href: string; label: string }[] = [];
+  if (hasRole(v, 'student')) items.push({ href: '/class', label: 'صفي' });
+  else items.push({ href: '/studio', label: t.nav.studio });
+  if (hasRole(v, 'teacher')) items.push({ href: '/teach', label: 'صفوفي' });
   if (hasRole(v, 'admin', 'reviewer')) items.push({ href: '/admin', label: t.nav.admin });
-  items.push({ href: '/studio/account', label: t.nav.account });
+  if (!hasRole(v, 'student')) items.push({ href: '/studio/account', label: t.nav.account });
   return <AccountMenu items={items} signOut={signOut} signOutLabel={t.nav.signOut} menuLabel={t.nav.account} />;
 }
 

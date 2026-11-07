@@ -103,9 +103,9 @@ test('مختبر الترميم: تكتمل اللوحة وتنفتح خطوات
   // لوحة المفاتيح: الأسهم تنقل التركيز
   await page.getByRole('button', { name: 'اخلط من جديد' }).click();
   await page.locator('[data-pos="0"]').focus();
-  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowRight');
   await expect(page.locator('[data-pos="1"]')).toBeFocused();
-  await page.keyboard.press('Enter'); await page.keyboard.press('ArrowLeft'); await page.keyboard.press('Enter');
+  await page.keyboard.press('Enter'); await page.keyboard.press('ArrowRight'); await page.keyboard.press('Enter');
   await expect(page.getByRole('status').filter({ hasText: /في مكانها/ })).toBeVisible();
   await expectNoOverflow(page);
   expect(errors).toEqual([]);

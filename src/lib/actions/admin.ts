@@ -34,11 +34,11 @@ export async function revokeRole(roleId: number) {
 
 export async function createSchool(form: FormData) {
   await requireAdmin();
-  const p = z.object({ name: z.string().trim().min(2).max(200), public_listing: z.literal('on').optional() })
+  const p = z.object({ name: z.string().trim().min(2).max(200), public_listing: z.literal('on').optional(), place_id: z.string().uuid() })
     .safeParse(Object.fromEntries(form));
   if (!p.success) fail('/admin/schools', 'violates check constraint');
   const supabase = await createClient();
-  const { error } = await supabase.from('schools').insert({ name: p.data!.name, public_listing: p.data!.public_listing === 'on' });
+  const { error } = await supabase.from('schools').insert({ name: p.data!.name, public_listing: p.data!.public_listing === 'on', place_id: p.data!.place_id });
   if (error) fail('/admin/schools', error.message);
   redirect('/admin/schools?ok=school');
 }

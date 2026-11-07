@@ -1,5 +1,6 @@
 import { PGlite } from '@electric-sql/pglite';
 import { pg_trgm } from '@electric-sql/pglite/contrib/pg_trgm';
+import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +9,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const migDir = join(here, '..', 'migrations');
 
 export async function freshDb() {
-  const db = new PGlite({ extensions: { pg_trgm } });
+  const db = new PGlite({ extensions: { pg_trgm, pgcrypto } });
   await db.exec(readFileSync(join(here, '_supabase_stub.sql'), 'utf8'));
   for (const f of readdirSync(migDir).filter((f) => f.endsWith('.sql')).sort()) {
     await db.exec(readFileSync(join(migDir, f), 'utf8'));

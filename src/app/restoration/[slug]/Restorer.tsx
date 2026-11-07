@@ -102,7 +102,7 @@ export function Restorer({ mosaic, width, height, steps, best }: { mosaic: Mosai
   function onKey(e: React.KeyboardEvent, i: number) {
     const r = Math.floor(i / N), c = i % N;
     const map: Record<string, number> = {
-      ArrowRight: c > 0 ? i - 1 : i, ArrowLeft: c < N - 1 ? i + 1 : i, // الشبكة من اليمين إلى اليسار
+      ArrowLeft: c > 0 ? i - 1 : i, ArrowRight: c < N - 1 ? i + 1 : i, // الشبكة بترتيب الصورة (من اليسار)
       ArrowUp: r > 0 ? i - N : i, ArrowDown: r < N - 1 ? i + N : i, Home: 0, End: total - 1,
     };
     if (e.key in map) { e.preventDefault(); setFocus(map[e.key]); }

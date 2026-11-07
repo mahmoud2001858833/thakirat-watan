@@ -25,6 +25,7 @@
 .progress { height: 4px; border-radius: 2px; background: var(--sand); margin-bottom: var(--space-3); overflow: hidden; }
 .progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--olive-fill), var(--gold-fill)); transition: width 500ms var(--ease); }
 .board {
+  direction: ltr; /* القطع بترتيب الصورة نفسها، لا بترتيب الكتابة */
   display: grid; gap: 3px; padding: 3px; width: 100%; background: #3a322c; border-radius: 14px; box-shadow: var(--shadow-lift);
   touch-action: none; user-select: none; transition: gap 900ms var(--ease), padding 900ms var(--ease), box-shadow 900ms var(--ease);
 }
