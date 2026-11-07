@@ -19,7 +19,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
         <p className={s.kicker}>{t.kicker}</p>
         <h1 className={s.title}>{t.title}</h1>
         <p className={s.lede}>{t.lede}</p>
-        {error === 'callback' && <p role="alert" className="notice notice-error">{t.callbackError}</p>}
+        {error && <p role="alert" className="notice notice-error">{t.callbackError}</p>}
         <SignInForms t={t} next={next} />
         <div className={s.fine}><p>{t.fine}</p><Link href="/">{t.back}</Link></div>
       </div>

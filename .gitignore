@@ -16,3 +16,4 @@ test-results/
 .vercel
 .env*
 .shots/
+*.tsbuildinfo

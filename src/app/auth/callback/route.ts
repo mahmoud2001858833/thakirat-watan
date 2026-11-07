@@ -6,6 +6,7 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const raw = searchParams.get('next') ?? '/studio';
   const next = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/studio';
+  if (searchParams.get('error')) return NextResponse.redirect(`${origin}/signin?error=expired`);
   const supabase = await createClient();
 
   const code = searchParams.get('code');

@@ -1,10 +1,10 @@
 'use client';
 import { useActionState, useState } from 'react';
-import { sendMagicLink, signInWithPassword, type SignInState } from './actions';
+import { sendMagicLink, signInWithPassword, verifyCode, type SignInState } from './actions';
 
 type T = {
   email: string; send: string; sent: string; password: string; usePassword: string;
-  signInPassword: string; error: string; rateLimited: string;
+  signInPassword: string; error: string; rateLimited: string; code: string; codeHint: string; verify: string; badCode: string;
 };
 
 const initial: SignInState = { status: 'idle' };
@@ -13,6 +13,7 @@ function Status({ state, t }: { state: SignInState; t: T }) {
   if (state.status === 'sent') return <p role="status" className="notice notice-ok">{t.sent}</p>;
   if (state.status === 'error') return <p role="alert" className="notice notice-error">{t.error}</p>;
   if (state.status === 'rate') return <p role="alert" className="notice notice-error">{t.rateLimited}</p>;
+  if (state.status === 'badcode') return <p role="alert" className="notice notice-error">{t.badCode}</p>;
   return null;
 }
 
@@ -20,6 +21,23 @@ export function SignInForms({ t, next }: { t: T; next: string }) {
   const [mode, setMode] = useState<'link' | 'password'>('link');
   const [linkState, linkAction, linkPending] = useActionState(sendMagicLink, initial);
   const [pwState, pwAction, pwPending] = useActionState(signInWithPassword, initial);
+  const [codeState, codeAction, codePending] = useActionState(verifyCode, initial);
+  const sentTo = linkState.status === 'sent' ? linkState.email : codeState.email;
+
+  if (sentTo) {
+    return (
+      <form action={codeAction}>
+        <Status state={codeState.status === 'idle' ? linkState : codeState} t={t} />
+        <input type="hidden" name="next" value={next} />
+        <input type="hidden" name="email" value={sentTo} />
+        <div className="field">
+          <label htmlFor="code">{t.code} <span className="hint">{t.codeHint}</span></label>
+          <input id="code" name="code" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9٠-٩]{6,10}" required dir="ltr" />
+        </div>
+        <button className="btn btn-primary" disabled={codePending}>{t.verify}</button>
+      </form>
+    );
+  }
 
   return mode === 'link' ? (
     <form action={linkAction} noValidate={false}>
