@@ -5,7 +5,7 @@ import sharp from 'sharp';
 const UA = 'thakirat-watan-archive/0.1 (https://thakirat-watan.vercel.app; non-commercial cultural archive)';
 const [manifest, outDir, metaOut, maxW = '1600'] = process.argv.slice(2);
 const list = JSON.parse(readFileSync(manifest, 'utf8'));
-const strip = (h = '') => h.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const strip = (h = '') => { const t = h.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(); const n = t.length / 2; return t.length % 2 === 0 && t.slice(0, n) === t.slice(n) ? t.slice(0, n) : t; };
 mkdirSync(outDir, { recursive: true });
 const meta = existsSync(metaOut) ? JSON.parse(readFileSync(metaOut, 'utf8')) : {};
 for (const it of list) {

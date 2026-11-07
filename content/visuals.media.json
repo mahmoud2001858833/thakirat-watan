@@ -119,21 +119,6 @@
   "bytes": 639706,
   "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAID/8QAHBAAAQUAAwAAAAAAAAAAAAAAAQACAwQSEUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDCpCyF/GcN7Cu5UglJLDl3qIpG/9k="
  },
- "bg-nabataean": {
-  "ok": true,
-  "title": "File:20100926 petra087.JPG",
-  "page": "https://commons.wikimedia.org/wiki/File:20100926_petra087.JPG",
-  "artist": "Jean Housen",
-  "credit": "Own work",
-  "license": "CC BY-SA 3.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-  "description": "Inscriptions nabatéennes, sur un rocher du Jabal al-Madbah.",
-  "date": "2010-09-26",
-  "width": 1920,
-  "height": 1285,
-  "bytes": 388343,
-  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwIE/8QAHRAAAQQDAQEAAAAAAAAAAAAAAQACAxEEISIjMf/EABUBAQEAAAAAAAAAAAAAAAAAAAME/8QAGBEBAQADAAAAAAAAAAAAAAAAAQACITH/2gAMAwEAAhEDEQA/AJayOFnpRcs+SyF9Fh6RzklgcTu/qLD6zpb3Q0iA3U5cL//Z"
- },
  "bg-moabite": {
   "ok": true,
   "title": "File:F4173 Louvre stele de Mesha AO5066 detail ecriture rwk.jpg",
@@ -148,5 +133,20 @@
   "height": 1514,
   "bytes": 580871,
   "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAANABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAgMF/8QAGhAAAwADAQAAAAAAAAAAAAAAAAECAxEiQf/EABQBAQAAAAAAAAAAAAAAAAAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDPm+ECunoK8RVY0p2Bf//Z"
+ },
+ "bg-nabataean": {
+  "ok": true,
+  "title": "File:Inscription Qasiu Louvre AO4988.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Inscription_Qasiu_Louvre_AO4988.jpg",
+  "artist": "Unknown artist",
+  "credit": "Jastrow (2007)",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "description": "Fragment from a dedicatory inscription in Nabataean script to the god Qasiu. Basalt, 1st century AD. Found in Sia in the Hauran, Southern Syria.",
+  "date": "",
+  "width": 1920,
+  "height": 791,
+  "bytes": 306293,
+  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAHABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEF/8QAGhAAAgMBAQAAAAAAAAAAAAAAAQIAAwUhMv/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8Ay7Npx5dgRLXs2s3XJiJR/9k="
  }
 }
