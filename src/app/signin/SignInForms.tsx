@@ -4,7 +4,7 @@ import { sendMagicLink, signInWithPassword, verifyCode, type SignInState } from 
 
 type T = {
   email: string; send: string; sent: string; password: string; usePassword: string;
-  signInPassword: string; error: string; rateLimited: string; code: string; codeHint: string; verify: string; badCode: string;
+  signInPassword: string; error: string; rateLimited: string; haveCode: string; code: string; codeHint: string; verify: string; badCode: string;
 };
 
 const initial: SignInState = { status: 'idle' };
@@ -18,18 +18,23 @@ function Status({ state, t }: { state: SignInState; t: T }) {
 }
 
 export function SignInForms({ t, next }: { t: T; next: string }) {
-  const [mode, setMode] = useState<'link' | 'password'>('link');
+  const [mode, setMode] = useState<'link' | 'password' | 'code'>('link');
   const [linkState, linkAction, linkPending] = useActionState(sendMagicLink, initial);
   const [pwState, pwAction, pwPending] = useActionState(signInWithPassword, initial);
   const [codeState, codeAction, codePending] = useActionState(verifyCode, initial);
   const sentTo = linkState.status === 'sent' ? linkState.email : codeState.email;
 
-  if (sentTo) {
+  if (sentTo || mode === 'code') {
     return (
       <form action={codeAction}>
         <Status state={codeState.status === 'idle' ? linkState : codeState} t={t} />
         <input type="hidden" name="next" value={next} />
-        <input type="hidden" name="email" value={sentTo} />
+        {sentTo ? <input type="hidden" name="email" value={sentTo} /> : (
+          <div className="field">
+            <label htmlFor="email3">{t.email}</label>
+            <input id="email3" name="email" type="email" autoComplete="email" required dir="ltr" />
+          </div>
+        )}
         <div className="field">
           <label htmlFor="code">{t.code} <span className="hint">{t.codeHint}</span></label>
           <input id="code" name="code" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9٠-٩]{6,10}" required dir="ltr" />
@@ -49,6 +54,7 @@ export function SignInForms({ t, next }: { t: T; next: string }) {
       </div>
       <button className="btn btn-primary" disabled={linkPending}>{t.send}</button>
       <button type="button" className="btn btn-quiet" onClick={() => setMode('password')}>{t.usePassword}</button>
+      <button type="button" className="btn btn-quiet" onClick={() => setMode('code')}>{t.haveCode}</button>
     </form>
   ) : (
     <form action={pwAction}>
