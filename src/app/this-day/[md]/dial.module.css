@@ -1,0 +1,26 @@
+.wrap { position: relative; display: flex; justify-content: center; }
+.toggle { gap: .5em; }
+.pop {
+  position: absolute; z-index: 30; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+  width: min(360px, calc(100vw - 32px)); background: var(--paper); color: var(--ink); border-radius: 24px; box-shadow: var(--shadow-lift);
+  padding: 18px; display: grid; gap: 10px; animation: rise 360ms var(--ease) both;
+}
+.dial { width: 100%; height: auto; touch-action: none; user-select: none; cursor: grab; display: block; }
+.dial:active { cursor: grabbing; }
+.spin { transition: transform 360ms var(--ease); }
+.mText { font-family: var(--font-body); font-size: 9.5px; fill: #5c5149; }
+.dText { font-family: var(--font-body); font-size: 12px; fill: #5c5149; }
+.on { fill: #8e4c39; font-weight: 700; }
+.dText.on { font-size: 15px; }
+.mark { fill: #8e4c39; }
+.center { font-family: var(--font-display); font-size: 30px; fill: #fbf7ef; }
+.centerSm { font-size: 12px; fill: #ede2ce; }
+.pointer { fill: #8e4c39; }
+.rings { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.kb { font-size: .85rem; border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 12px; cursor: default; }
+.legend { margin: 0; font-size: .8rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; justify-content: center; max-width: none; }
+.dotLegend { width: 7px; height: 7px; border-radius: 50%; background: #8e4c39; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+:global([data-theme="dark"]) .dial circle:first-of-type { fill: #3a312a; }
+@media (max-width: 700px) { .pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-height: calc(100dvh - 24px); overflow: auto; } }
+.backdrop { position: fixed; inset: 0; z-index: 29; background: rgb(20 16 12 / .35); }

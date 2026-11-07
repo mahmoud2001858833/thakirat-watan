@@ -20,7 +20,10 @@
 .lab { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: start; }
 .boardHead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
 .boardTitle { font-size: var(--step-3); margin: 0; }
-.stats { margin: 0; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.stats { margin: 0; color: var(--ink-2); font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap; gap: .4em 1.1em; }
+.timer { color: var(--ink); font-weight: 600; min-width: 4.5em; }
+.progress { height: 4px; border-radius: 2px; background: var(--sand); margin-bottom: var(--space-3); overflow: hidden; }
+.progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--olive-fill), var(--gold-fill)); transition: width 500ms var(--ease); }
 .board {
   display: grid; gap: 3px; padding: 3px; width: 100%; background: #3a322c; border-radius: 14px; box-shadow: var(--shadow-lift);
   touch-action: none; user-select: none; transition: gap 900ms var(--ease), padding 900ms var(--ease), box-shadow 900ms var(--ease);
@@ -30,7 +33,16 @@
   background-repeat: no-repeat; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .25);
   transition: transform 260ms var(--ease), box-shadow 260ms var(--ease), filter 260ms var(--ease), border-radius 900ms var(--ease);
 }
-.tile:hover { filter: brightness(1.06); }
+.tile:hover { filter: brightness(1.08); transform: scale(.985); }
+.tile:active { cursor: grabbing; }
+.lifted { opacity: .25; filter: grayscale(.6); transform: scale(.94); }
+.over { transform: scale(.9); box-shadow: 0 0 0 3px var(--petra-fill), inset 0 0 0 999px rgb(196 131 111 / .18); z-index: 1; }
+.flash { animation: placed 700ms var(--ease); z-index: 2; }
+@keyframes placed { 0% { box-shadow: 0 0 0 0 rgb(181 138 60 / .9); transform: scale(1.06); } 100% { box-shadow: 0 0 0 14px rgb(181 138 60 / 0); transform: none; } }
+.ghost {
+  position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; border-radius: 4px; background-repeat: no-repeat;
+  box-shadow: 0 18px 40px -8px rgb(0 0 0 / .55), 0 0 0 2px var(--gold-fill); will-change: transform;
+}
 .tile:focus-visible { outline: 3px solid var(--gold-fill); outline-offset: -3px; z-index: 1; }
 .home { box-shadow: inset 0 0 0 1px rgb(181 138 60 / .55); }
 .selected { transform: scale(.92); box-shadow: 0 0 0 3px var(--gold-fill), var(--shadow-lift); z-index: 2; }

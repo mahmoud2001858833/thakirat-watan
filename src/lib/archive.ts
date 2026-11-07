@@ -54,7 +54,7 @@ export async function facets() {
   const supabase = await createClient();
   const [{ data: places }, { data: periods }] = await Promise.all([
     supabase.from('places').select('key, name_ar').eq('kind', 'governorate').order('name_ar'),
-    supabase.from('periods').select('key, name_ar, start_year').order('start_year'),
+    supabase.from('periods').select('key, name_ar, start_year, end_year').order('start_year'),
   ]);
   return { places: places ?? [], periods: periods ?? [] };
 }

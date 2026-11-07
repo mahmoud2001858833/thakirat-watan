@@ -3,12 +3,12 @@ import { ArchFrame } from './ArchFrame';
 import { HeroController } from './HeroController';
 import s from './hero.module.css';
 
-/** «نافذة على الأردن»: جدار حجري بقوس، وخلفه المشهد بضوء ساعة عمّان. التمرير يعبر بك من القوس. */
+/** «نافذة على الأردن»: جدار حجري بقوس، وخلفه المشهد : الخزنة في البترا. التمرير يعبر بك من القوس. */
 export function WindowHero({ eyebrow, title, lede, cue }: { eyebrow: string; title: string; lede: string; cue: string }) {
   return (
     <section id="window" className={s.hero} aria-labelledby="hero-title">
       <div className={s.stage}>
-        <div className={s.sceneLayer} aria-hidden="true"><PhotoScene /></div>
+        <div className={s.sceneLayer} aria-hidden="true"><PhotoScene priority /></div>
         <div className={s.wall} aria-hidden="true" />
         <div className={s.archBox} aria-hidden="true"><ArchFrame /></div>
 

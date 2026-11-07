@@ -18,8 +18,22 @@
 .swatch { width: 12px; height: 12px; border-radius: 50%; }
 .sheet {
   position: absolute; inset-inline-end: clamp(12px, 3vw, 32px); top: clamp(120px, 14vw, 170px); width: min(26rem, calc(100% - 24px)); z-index: 5;
-  background: var(--paper); border-radius: 22px; box-shadow: var(--shadow-lift); padding: var(--space-5); animation: rise 500ms var(--ease) both;
+  background: var(--paper); border-radius: 22px; box-shadow: var(--shadow-lift); padding: var(--space-5);
 }
+.sheet[data-anim="true"] { animation: unfold 720ms var(--ease) backwards; }
+@keyframes unfold { from { clip-path: circle(6px at var(--ox, 50%) var(--oy, 0)); opacity: .6; } 60% { opacity: 1; } to { clip-path: circle(400% at var(--ox, 50%) var(--oy, 0)); } }
+.sheet[data-anim="true"] > :not(.sheetLeaf) { animation: rise 500ms 220ms var(--ease) both; }
+.sheetLeaf { position: absolute; inset-inline-start: var(--space-5); top: -14px; width: 34px; height: 16px; border-radius: 0 100% 0 100%; background: linear-gradient(135deg, #6e7b4f, #3f6b3a); transform: rotate(-18deg); box-shadow: var(--shadow-soft); }
+.sheet[data-anim="true"] .sheetLeaf { animation: leafIn 800ms var(--ease) both; }
+@keyframes leafIn { from { transform: rotate(-90deg) scale(.2); } 70% { transform: rotate(-10deg) scale(1.1); } to { transform: rotate(-18deg) scale(1); } }
+.legend button { transition: border-color 200ms var(--ease), transform 120ms var(--ease), box-shadow 200ms var(--ease); }
+.legend button:hover { border-color: var(--ink-2); }
+.legend button:active, .zoom button:active { transform: scale(.94); }
+.zoom button { transition: transform 120ms var(--ease), background 200ms var(--ease); }
+.zoom button:hover { background: var(--paper); }
+.leafList button { transition: box-shadow 300ms var(--ease), transform 300ms var(--ease); }
+.leafList button:hover { transform: translateX(-3px); }
+:global([dir="rtl"]) .leafList button:hover { transform: translateX(3px); }
 .close { position: absolute; inset-inline-end: 10px; top: 8px; width: 44px; height: 44px; border: 0; background: transparent; font-size: 1.6rem; cursor: pointer; color: var(--ink-2); }
 .sheetGov { color: var(--olive-text); font-weight: 600; margin: 0 0 var(--space-3); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
 .demo { font-size: 0.75rem; color: var(--ink-2); border: 1px dashed var(--ink-2); padding: 0 .45rem; border-radius: 4px; }

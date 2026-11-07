@@ -1,64 +1,4 @@
 {
- "hero-dawn": {
-  "ok": true,
-  "title": "File:Ajloun Forest Reserve in Jordan kz03.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Ajloun_Forest_Reserve_in_Jordan_kz03.jpg",
-  "artist": "Krzysztof Ziarnek, Kenraiz",
-  "credit": "Own work",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "description": "Ajloun Forest Reserve in Jordan",
-  "date": "2023-05-10 10:11:15",
-  "width": 1920,
-  "height": 1440,
-  "bytes": 939281,
-  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAMABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEBf/EABwQAAICAwEBAAAAAAAAAAAAAAECAAMEBSEREv/EABUBAQEAAAAAAAAAAAAAAAAAAAED/8QAGBEBAQADAAAAAAAAAAAAAAAAAQACEkH/2gAMAwEAAhEDEQA/AF4mVnUoOg977LzvLAfkVqTMZLHfGYlj7C1Ki64LZ0EyI5cZ1L//2Q=="
- },
- "hero-day": {
-  "ok": true,
-  "title": "File:The Treasury, Petra, Jordan1.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:The_Treasury,_Petra,_Jordan1.jpg",
-  "artist": "Diego Delso",
-  "credit": "Own work",
-  "license": "CC BY-SA 3.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-  "description": "The Treasury, Petra, Jordan",
-  "date": "2011-09-30",
-  "width": 1550,
-  "height": 2200,
-  "bytes": 491233,
-  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAXABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIFBP/EACEQAAEEAQMFAAAAAAAAAAAAAAEAAgMhBBESMhMxYnGR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQT/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIh/9oADAMBAAIRAxEAPwBJs1sJNEuFLNvmy2k8W69ik5Tub5WqGNHGCSb1NKd1UmaWx5dK/aLKq4UTunrIB99oQhJHt//Z"
- },
- "hero-dusk": {
-  "ok": true,
-  "title": "File:Wadi Rum at sunset1.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Wadi_Rum_at_sunset1.jpg",
-  "artist": "Uwe Brodrecht",
-  "credit": "https://www.flickr.com/photos/uwebrodrecht/25561545294/",
-  "license": "CC BY-SA 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "description": "Wadi Rum",
-  "date": "2016-03-11 17:23:03",
-  "width": 1920,
-  "height": 365,
-  "bytes": 60228,
-  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAADABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEE/8QAGxAAAgMAAwAAAAAAAAAAAAAAAQIAAwQFESH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8Ax0b9SuOrmHsvJ7tLMoNzGIgf/9k="
- },
- "hero-night": {
-  "ok": true,
-  "title": "File:320A5538-Edit-3.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:320A5538-Edit-3.jpg",
-  "artist": "Faraheed",
-  "credit": "Own work",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "description": "milky way in Wadi Rum",
-  "date": "2020-06-12 03:47:46",
-  "width": 1920,
-  "height": 1280,
-  "bytes": 424675,
-  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAQMG/8QAGxAAAgIDAQAAAAAAAAAAAAAAAQIAAxEhIpH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABcRAAMBAAAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/AM3WiuevY20BTzI3Eq+jiCMScE6hS2ph/9k="
- },
  "mosaic-madaba": {
   "ok": true,
   "title": "File:Madaba Map reproduction.jpg",
@@ -148,5 +88,20 @@
   "height": 791,
   "bytes": 306293,
   "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAHABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEF/8QAGhAAAgMBAQAAAAAAAAAAAAAAAQIAAwUhMv/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8Ay7Npx5dgRLXs2s3XJiJR/9k="
+ },
+ "hero-khazneh": {
+  "ok": true,
+  "title": "File:Petra Al Khazneh 1975.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Petra_Al_Khazneh_1975.jpg",
+  "artist": "Dosseman",
+  "credit": "Own work",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "description": "One of some pictures of the Treasury. Taken early in the morning, before it got crowded.",
+  "date": "2013-06-08 16:14:55",
+  "width": 3200,
+  "height": 2130,
+  "bytes": 926333,
+  "blur": "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAQIE/8QAHBAAAgICAwAAAAAAAAAAAAAAAQIAAwQREiFB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAwT/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDGtr1oWLHuXbkPdjqORKDyCorIARsQdFWrQGhCUP/Z"
  }
 }

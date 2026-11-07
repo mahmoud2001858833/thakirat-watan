@@ -18,10 +18,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#f7f2e8' };
 
-// قبل الرسم: الوضع الداكن فقط إن اختاره المستخدم صراحة، ووقت النهار حسب ساعة عمّان
-const bootScript = `try{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}
-try{var h=+new Intl.DateTimeFormat('en-GB',{hour:'numeric',hourCycle:'h23',timeZone:'Asia/Amman'}).format(new Date());
-document.documentElement.dataset.phase=h>=5&&h<7?'dawn':h>=7&&h<16?'day':h>=16&&h<19?'dusk':'night'}catch(e){}`;
+// قبل الرسم: الوضع الداكن فقط إن اختاره المستخدم صراحة
+const bootScript = `try{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

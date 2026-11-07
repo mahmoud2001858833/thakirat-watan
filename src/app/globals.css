@@ -163,6 +163,12 @@ legend { font-family: var(--font-display); font-size: var(--step-1); margin-bott
 .btn-danger { border-color: var(--danger); color: var(--danger); }
 .btn-danger:hover { background: var(--danger); color: var(--paper); }
 .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+/* الضغط: انكماش خفيف يُشعر بأن الزر استجاب */
+.btn:active:not([disabled]), .icon-btn:active, .theme-toggle:active, .press:active { transform: scale(0.96); transition-duration: 90ms; }
+.btn:focus-visible { outline-offset: 4px; }
+.lift { transition: transform 500ms var(--ease), box-shadow 500ms var(--ease); }
+.lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.lift:active { transform: translateY(-1px) scale(0.99); transition-duration: 120ms; }
 
 .notice {
   border-inline-start: 3px solid var(--gold-fill);
@@ -214,3 +220,23 @@ legend { font-family: var(--font-display); font-size: var(--step-1); margin-bott
 .ledger tr:hover td { background: color-mix(in srgb, var(--sand) 45%, transparent); }
 .ledger a { font-weight: 600; }
 .empty-state { padding: var(--space-7) 0; color: var(--ink-2); border-top: 1px solid var(--line); }
+
+/* ───── انتقالات الصفحات: كل صفحة تدخل بتلاشٍ وارتفاع خفيف حين تُركَّب ───── */
+#main > main { animation: page-in 460ms var(--ease) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(10px); } }
+/* انتقال العنصر المشترك (صورة المادة) بين الأرشيف وصفحتها */
+::view-transition-group(.morph) { animation-duration: 520ms; animation-timing-function: var(--ease); }
+::view-transition-image-pair(.morph) { animation-name: vt-blur; }
+@keyframes vt-blur { 30% { filter: blur(2px); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+
+/* ───── لوحة حوار عامة ───── */
+.dialog { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; width: 100vw; height: 100dvh; margin: 0; }
+.dialog::backdrop { background: rgb(20 16 12 / 0.86); backdrop-filter: blur(4px); }
+
+/* لوحة أفضل الأزمنة */
+.lb { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: var(--step--1); }
+.lb li { display: grid; grid-template-columns: 2em 4.5em 1fr auto; gap: var(--space-2); padding: 6px 10px; border-radius: 8px; font-variant-numeric: tabular-nums; }
+.lb li:nth-child(odd) { background: color-mix(in srgb, var(--sand) 55%, transparent); }
+.lb li[data-you="true"] { background: color-mix(in srgb, var(--olive-fill) 20%, transparent); font-weight: 600; }
+.lb-n { color: var(--gold-text); font-weight: 600; } .lb-t { font-weight: 600; } .lb-d, .lb-m { color: var(--ink-2); }

@@ -8,7 +8,10 @@ const widths = [
   { name: '768', width: 768, height: 1024 },
   { name: '390', width: 390, height: 844 },
 ];
-const publicPages = [{ path: '/', slug: 'home' }, { path: '/signin', slug: 'signin' }];
+const publicPages = [
+  { path: '/', slug: 'home' }, { path: '/signin', slug: 'signin' }, { path: '/archive', slug: 'archive' }, { path: '/archive/compare', slug: 'compare' },
+  { path: '/this-day/05-25', slug: 'this-day' }, { path: '/write-name', slug: 'write-name' }, { path: '/restoration/madaba-map', slug: 'restoration' }, { path: '/olive', slug: 'olive' },
+];
 const privatePages = [
   { path: '/studio', slug: 'studio', who: 'admin' as const },
   { path: '/studio/new', slug: 'studio-new', who: 'admin' as const },
@@ -43,12 +46,6 @@ for (const w of widths) {
             if (shots) await page.screenshot({ path: `.shots/home-${label}-${w.name}.png` });
           }
           await page.evaluate(() => scrollTo(0, 0));
-          for (const ph of ['dawn', 'dusk', 'night'] as const) {
-            await page.locator(`[data-phase-btn="${ph}"]`).click();
-            await page.waitForTimeout(1700);
-            await a11y(page);
-            if (shots) await page.screenshot({ path: `.shots/home-${ph}-${w.name}.png` });
-          }
           await page.evaluate(() => scrollTo(0, document.getElementById('inside')!.offsetTop));
           await page.waitForTimeout(300);
           if (shots) await page.screenshot({ path: `.shots/home-inside-${w.name}.png`, fullPage: true });

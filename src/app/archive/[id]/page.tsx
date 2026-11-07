@@ -9,6 +9,9 @@ import { TrustBadge, DemoTag } from '@/components/TrustBadge';
 import { Credit } from '@/components/archive/Credit';
 import { ArchiveWall } from '@/components/archive/ArchiveWall';
 import { reportItem } from './actions';
+import { DeepZoom } from '@/components/archive/DeepZoom';
+import { hiresUrl } from '@/components/archive/hires';
+import { ViewTransition } from 'react';
 import s from './item.module.css';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -31,10 +34,18 @@ export default async function ArchiveItemPage({ params, searchParams }: { params
       <article className={s.exhibit}>
         <figure className={s.figure}>
           {m && m.width && m.height && (
-            <Image src={mediaSrc(m)} alt={m.alt_ar ?? item.title_ar} width={m.width} height={m.height} priority
-              sizes="(max-width: 1000px) 100vw, 62vw" className={s.img} placeholder={m.blur ? 'blur' : 'empty'} blurDataURL={m.blur ?? undefined} />
+            <DeepZoom title={item.title_ar} img={{ src: mediaSrc(m), hires: hiresUrl(m.source_url), w: m.width, h: m.height, alt: m.alt_ar ?? item.title_ar, blur: m.blur }}>
+              <ViewTransition name={`piece-${item.id}`} share="morph" default="none">
+                <Image src={mediaSrc(m)} alt={m.alt_ar ?? item.title_ar} width={m.width} height={m.height} priority
+                  sizes="(max-width: 1000px) 100vw, 62vw" className={s.img} placeholder={m.blur ? 'blur' : 'empty'} blurDataURL={m.blur ?? undefined} />
+              </ViewTransition>
+            </DeepZoom>
           )}
           {m && <figcaption className={s.cap}><Credit m={m} /></figcaption>}
+          <p className={s.tools}>
+            <Link href={`/archive/compare?a=${item.id}`} className="btn">قارنها بمادة أخرى</Link>
+          </p>
+          
         </figure>
 
         <aside className={s.label} aria-label="لوحة التعريف">

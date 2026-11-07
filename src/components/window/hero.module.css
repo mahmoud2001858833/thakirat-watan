@@ -72,33 +72,11 @@
   bottom: max(16px, env(safe-area-inset-bottom));
   display: grid; justify-items: center; gap: var(--space-2);
 }
-.meta { display: grid; justify-items: center; gap: var(--space-2); }
-.clock { margin: 0; font-size: var(--step--1); color: var(--ink-2); display: flex; gap: .45em; flex-wrap: wrap; justify-content: center; }
-.time { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
-.phases {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
-  padding: 4px; border-radius: 999px; background: color-mix(in srgb, var(--paper) 85%, transparent);
-  box-shadow: var(--shadow-soft);
-}
-.phaseBtn {
-  display: inline-flex; align-items: center; gap: 6px;
-  min-height: 40px; min-width: 44px; padding: 0 12px;
-  font: inherit; font-size: var(--step--1); color: var(--ink-2);
-  border: 0; border-radius: 999px; background: transparent; cursor: pointer;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-.phaseBtn:hover { color: var(--ink); }
-.phaseBtn[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.dot { width: 9px; height: 9px; border-radius: 50%; }
-.dot[data-p="dawn"] { background: #e5aaa3; }
-.dot[data-p="day"] { background: #e8b54f; }
-.dot[data-p="dusk"] { background: #e38a6c; }
-.dot[data-p="night"] { background: #3b5591; }
+/* الإسناد تحت القوس */
 .cue { display: none; }
 
 @media (max-height: 700px) and (orientation: portrait) {
   .hero { --aw: min(56vw, 36svh); }
-  .clock { display: none; }
 }
 
 /* سطح المكتب والأفقي: العنوان على يمين الجدار، والساعة على يساره */
@@ -122,9 +100,6 @@
     justify-items: end;
     transform: translateY(calc(-50% + var(--p) * -60px));
   }
-  .meta { justify-items: end; }
-  .clock { justify-content: flex-end; }
-  .phases { justify-content: flex-end; }
   .cue {
     display: inline-flex; align-items: center; gap: var(--space-3);
     margin-top: var(--space-5); color: var(--ink); font-weight: 600; text-decoration: none; min-height: 44px;

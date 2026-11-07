@@ -86,7 +86,7 @@ const PAL: Record<Season, { leaves: string[]; bark: string[]; tint: string }> = 
 // درجة زيتية خاصة بكل محافظة (ترتيب المفاتيح أبجدياً كما في قاعدة البيانات)
 export const GOV_TONES = ['#3f6b3a', '#6b8f3a', '#2f5d50', '#8a9a3a', '#4e7a2c', '#5f6f2a', '#7a8f55', '#3c7a62', '#99a04a', '#55703f', '#2f6b45', '#82963f'];
 
-function leafPath(p: Path2D, x: number, y: number, a: number, len: number, wid: number) {
+export function leafPath(p: Path2D, x: number, y: number, a: number, len: number, wid: number) {
   const ca = Math.cos(a), sa = Math.sin(a), tx = x + ca * len, ty = y + sa * len;
   const mx = x + ca * len * 0.5, my = y + sa * len * 0.5, nx = -sa * wid, ny = ca * wid;
   p.moveTo(x, y);
@@ -250,4 +250,25 @@ export function leafPaths(pos: Float32Array, g: number[], keep: (i: number) => b
     leafPath(p, pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2], 21, 4.6);
   }
   return { on, off };
+}
+
+/** مسارات الأوراق مقسومة إلى أشرطة عمودية، لكل شريط طور ريح مختلف (موجة تعبر الشجرة) */
+export const BANDS = 7;
+export const bandOf = (x: number) => Math.min(BANDS - 1, Math.max(0, Math.floor((x / W) * BANDS)));
+export function windPaths(pos: Float32Array, g: number[], keep: (i: number) => boolean) {
+  const on = GOV_TONES.map(() => Array.from({ length: BANDS }, () => new Path2D()));
+  const off = Array.from({ length: BANDS }, () => new Path2D());
+  for (let i = 0; i < g.length; i++) {
+    const b = bandOf(pos[i * 3]);
+    const p = keep(i) ? (on[g[i]] ?? on[0])[b] : off[b];
+    leafPath(p, pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2], 21, 4.6);
+  }
+  return { on, off };
+}
+/** إزاحة الريح لشريط في لحظة t (بالثواني): هبّات بطيئة فوق تمايل سريع خفيف */
+export function wind(t: number, band: number) {
+  const gust = 0.55 + 0.45 * Math.sin(t * 0.21) * Math.sin(t * 0.33 + 1);
+  const ph = band * 0.55;
+  const dx = (Math.sin(t * 1.25 - ph) * 2.2 + Math.sin(t * 3.1 - ph * 1.7) * 0.7) * (0.6 + gust);
+  return { dx, dy: Math.abs(dx) * 0.22, rot: dx * 0.004 };
 }

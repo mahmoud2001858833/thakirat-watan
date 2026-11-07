@@ -42,3 +42,22 @@
   .panel { grid-template-columns: minmax(0, 1fr); }
   .stone { aspect-ratio: 1 / 1; }
 }
+
+/* الحجر المنقوش */
+.stoneCol { display: grid; gap: var(--space-4); min-width: 0; }
+.stoneBox { position: relative; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-lift); background: #3a3633; }
+.canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.canvas:focus-visible { outline: 3px solid var(--gold-fill); outline-offset: -3px; }
+.recarve {
+  position: absolute; inset-inline-end: 14px; top: 14px; font: inherit; font-size: .85rem; font-weight: 600; color: #fbf7ef;
+  background: rgb(20 16 12 / .55); border: 1px solid rgb(255 255 255 / .25); border-radius: 999px; padding: 6px 14px; cursor: pointer; min-height: 40px;
+  backdrop-filter: blur(4px); transition: background 200ms var(--ease), transform 120ms var(--ease);
+}
+.recarve:hover:not([disabled]) { background: rgb(20 16 12 / .8); }
+.recarve:active:not([disabled]) { transform: scale(.95); }
+.recarve[disabled] { opacity: .8; cursor: progress; }
+.lightHint { position: absolute; inset-inline: 0; bottom: 10px; text-align: center; margin: 0 auto; color: rgb(251 247 239 / .8); font-size: .8rem; pointer-events: none; max-width: none; }
+.real { margin: 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-3); align-items: center; font-size: .82rem; color: var(--ink-2); }
+.realImg { width: 96px; height: 96px; object-fit: cover; border-radius: 12px; }
+.real a { color: inherit; }
+@media (max-width: 900px) { .stoneBox { aspect-ratio: 1 / 1; } }

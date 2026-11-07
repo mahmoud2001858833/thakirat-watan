@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getDict, fmtNumber } from '@/i18n';
 import { facets, listArchive } from '@/lib/archive';
-import { ArchiveWall } from '@/components/archive/ArchiveWall';
+import { ArchiveExplorer, type ExItem } from '@/components/archive/ArchiveExplorer';
+import { mediaSrc } from '@/lib/media';
+import { yearLabel } from '@/lib/archive';
 import s from './page.module.css';
 
 export const metadata: Metadata = { title: 'الأرشيف', description: 'صور ووثائق من الأردن، لكل منها مصدر ودرجة توثيق وحقوق استخدام.' };
@@ -57,7 +59,14 @@ export default async function Archive({ searchParams }: { searchParams: Promise<
         {items.length ? `${fmtNumber(items.length)} مادة` : 'لا توجد مواد تطابق البحث.'}
         {filtered && <> · <Link href="/archive">امسح البحث</Link></>}
       </p>
-      <ArchiveWall items={items} priority={3} />
+      <ArchiveExplorer items={items.map((it): ExItem => {
+        const m = it.item_media?.[0];
+        return {
+          id: it.id, title: it.title_ar, kind: it.kind, trust: it.trust, is_demo: it.is_demo, place: it.places?.name_ar ?? null,
+          when: yearLabel(it.year_start, it.year_end), year: it.year_start ?? it.year_end, period: it.periods?.key ?? null,
+          img: m && m.width && m.height ? { src: mediaSrc(m), w: m.width, h: m.height, alt: m.alt_ar ?? it.title_ar, blur: m.blur } : null,
+        };
+      })} eras={f.periods.filter((p) => p.key).map((p) => ({ key: p.key!, name: p.name_ar, start: p.start_year ?? 0, end: (p as { end_year?: number }).end_year ?? 2100 }))} />
     </main>
   );
 }

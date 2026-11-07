@@ -1,5 +1,6 @@
 'use client';
-import { useActionState, useCallback, useEffect, useMemo, useState } from 'react';
+import { useActionState, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { play } from '@/lib/client/sound';
 import Link from 'next/link';
 import { browserClient } from '@/lib/supabase/browser';
 import { plantLeaf, type LeafState } from '@/app/olive/actions';
@@ -19,6 +20,8 @@ export function OliveExplorer({ state, govs, schools, signedIn, buds, planted }:
   const [gov, setGov] = useState<number | null>(null);
   const [school, setSchool] = useState<string | null>(null);
   const [open, setOpen] = useState<Leaf | null>(null);
+  const origin = useRef<{ x: number; y: number } | null>(null);
+  const sheet = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<{ ids: string[]; g: number[]; s: (string | null)[] } | null>(null);
   const [page, setPage] = useState(0);
   const [items, setItems] = useState<Leaf[]>([]);
@@ -26,10 +29,19 @@ export function OliveExplorer({ state, govs, schools, signedIn, buds, planted }:
   const gIndex = useMemo(() => new Map(govs.map((g, i) => [g.id, i])), [govs]);
   const budList = useMemo(() => buds.map((b) => ({ id: b.id, g: gIndex.get(b.governorate_id) ?? 0 })), [buds, gIndex]);
 
-  const pick = useCallback(async (id: string) => {
+  const pick = useCallback(async (id: string, at?: { x: number; y: number }) => {
+    origin.current = at ?? null;
     const { data }: { data: Leaf | null } = await browserClient().from('olive_leaves').select('id, body, display_name, governorate_id, created_at, is_demo, status').eq('id', id).maybeSingle();
     if (data) setOpen(data as Leaf);
   }, []);
+  // الذكرى تتفتح من موضع الورقة نفسها
+  useLayoutEffect(() => {
+    const el = sheet.current; if (!el || !open) return;
+    const r = el.getBoundingClientRect(), o = origin.current ?? { x: r.left + r.width / 2, y: r.top };
+    el.style.setProperty('--ox', `${o.x - r.left}px`); el.style.setProperty('--oy', `${o.y - r.top}px`);
+    el.dataset.anim = 'false'; void el.offsetWidth; el.dataset.anim = 'true';
+  }, [open]);
+  const close = () => { setOpen(null); play('tap'); };
   const onData = useCallback((d: { ids: string[]; g: number[]; s: (string | null)[] }) => setList(d), []);
 
   // البديل النصي: 24 ورقة في كل صفحة حسب الفلتر
@@ -74,7 +86,7 @@ export function OliveExplorer({ state, govs, schools, signedIn, buds, planted }:
         </div>
       </div>
 
-      <OliveCanvas state={state} govs={govs} buds={budList} filterGov={gov} filterSchool={school} onPick={pick} onData={onData} />
+      <OliveCanvas state={state} govs={govs} buds={budList} filterGov={gov} filterSchool={school} onPick={pick} onData={onData} planted={planted} />
 
       <ul className={s.legend} aria-label="ألوان المحافظات">
         {govs.map((g, i) => (
@@ -85,8 +97,10 @@ export function OliveExplorer({ state, govs, schools, signedIn, buds, planted }:
       </ul>
 
       {open && (
-        <div className={s.sheet} role="dialog" aria-modal="false" aria-labelledby="leaf-h" data-testid="leaf-sheet">
-          <button type="button" className={s.close} onClick={() => setOpen(null)} aria-label="أغلق">×</button>
+        <div ref={sheet} key={open.id} className={s.sheet} role="dialog" aria-modal="false" aria-labelledby="leaf-h" data-testid="leaf-sheet"
+          onKeyDown={(e) => { if (e.key === 'Escape') close(); }}>
+          <span className={s.sheetLeaf} aria-hidden="true" />
+          <button type="button" className={s.close} onClick={close} aria-label="أغلق">×</button>
           <p id="leaf-h" className={s.sheetGov}>{govName(open.governorate_id)}{open.is_demo && <span className={s.demo}>تجريبي</span>}{open.status === 'pending' && <span className={s.demo}>برعم بانتظار المراجعة</span>}</p>
           <blockquote className={s.quote}>{open.body}</blockquote>
           <p className={s.sheetMeta}>{open.display_name && <>— {open.display_name} · </>}{new Intl.DateTimeFormat('ar-JO-u-nu-arab', { dateStyle: 'long' }).format(new Date(open.created_at))}</p>
@@ -131,7 +145,7 @@ export function OliveExplorer({ state, govs, schools, signedIn, buds, planted }:
           <ul className={s.leafList} data-testid="leaf-list">
             {shown.map((l) => (
               <li key={l.id}>
-                <button type="button" onClick={() => setOpen(l)}>
+                <button type="button" onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); origin.current = { x: r.left + 20, y: r.top + r.height / 2 }; setOpen(l); play('rustle'); }}>
                   <span className={s.leafBody}>{l.body}</span>
                   <span className={s.leafMeta}>{govName(l.governorate_id)}{l.is_demo && ' · تجريبي'}</span>
                 </button>

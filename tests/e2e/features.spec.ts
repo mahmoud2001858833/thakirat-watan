@@ -42,15 +42,16 @@ test('صفحة المادة: الصورة بإسنادها، ودرجة التو
 test('هذا اليوم: 25 أيار يحمل الاستقلال، ويوم بلا أحداث يقترح أقرب الأيام', async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto('/this-day/05-25');
-  await expect(page.getByRole('heading', { level: 2 })).toHaveText('استقلال المملكة');
-  await expect(page.getByText('بريطانيا تعترف بحكومة مستقلة في شرق الأردن')).toBeVisible();
+  await expect(page.getByTestId('book').getByRole('heading', { level: 2 })).toHaveText('استقلال المملكة');
+  await expect(page.getByTestId('book').getByText('بريطانيا تعترف بحكومة مستقلة في شرق الأردن')).toBeVisible();
   await expect(page.getByRole('link', { name: /ويكيبيديا/ }).first()).toHaveAttribute('href', /wikipedia\.org/);
   await a11y(page);
   await expectNoOverflow(page);
   await page.goto('/this-day/01-03');
   await expect(page.getByText('لا توجد أحداث موثقة لهذا اليوم بعد.')).toBeVisible();
-  await page.locator('[class*="near"] a').first().click();
-  await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
+  await page.getByTestId('next-page').click();
+  await expect(page.getByTestId('book').getByRole('heading', { level: 2 })).toBeVisible();
+  await expect(page).not.toHaveURL(/01-03$/);
   await page.goto('/this-day/02-31');
   await expect(page.getByRole('heading', { name: 'لم نجد هذه الصفحة في الأرشيف' })).toBeVisible();
   await page.goto('/this-day');
@@ -105,7 +106,7 @@ test('مختبر الترميم: تكتمل اللوحة وتنفتح خطوات
   await page.keyboard.press('ArrowLeft');
   await expect(page.locator('[data-pos="1"]')).toBeFocused();
   await page.keyboard.press('Enter'); await page.keyboard.press('ArrowLeft'); await page.keyboard.press('Enter');
-  await expect(page.getByText(/بدّلت القطعتين/)).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: /في مكانها/ })).toBeVisible();
   await expectNoOverflow(page);
   expect(errors).toEqual([]);
 });

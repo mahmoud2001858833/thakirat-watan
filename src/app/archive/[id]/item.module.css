@@ -21,3 +21,4 @@
 .related { margin-top: var(--section); }
 .related h2 { font-size: var(--step-2); margin-bottom: var(--space-6); }
 @media (max-width: 1000px) { .exhibit { grid-template-columns: minmax(0, 1fr); } .figure { position: static; } }
+.tools { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-4) 0 0; }

@@ -1,7 +1,12 @@
 'use client';
 import { useMemo, useRef, useState } from 'react';
 import { glyphs, isArabicName, transliterate, type Letter, type Script } from '@/lib/scripts/transliterate';
+import { CarvedStone, type StoneHandle } from './CarvedStone';
+import type { Material } from './carve';
 import s from './name.module.css';
+
+const MATERIAL: Record<Script, Material> = { safaitic: 'basalt', nabataean: 'sandstone', moabite: 'stele' };
+const STONE: Record<Script, string> = { safaitic: 'صخرة بازلت من الحرّة، كالتي نقش عليها أهل البادية', nabataean: 'صخر رملي وردي كصخر البترا', moabite: 'بازلت أسود كحجر مسلة ميشع' };
 
 type Credit = { credit: string; license: string; license_url: string | null; source_url: string };
 export type ScriptInfo = {
@@ -20,31 +25,26 @@ export function NameStudio({ scripts, letters }: { scripts: ScriptInfo[]; letter
   const words = useMemo(() => (valid ? transliterate(name, letters, active) : []), [name, letters, active, valid]);
   const text = glyphs(words);
   const linkRef = useRef<HTMLAnchorElement>(null);
+  const stone = useRef<StoneHandle>(null);
 
   async function saveCard() {
     setBusy(true);
     try {
       await document.fonts.load(`120px ${info.font}`, text);
-      const W = 1200, H = 1500, c = document.createElement('canvas');
-      c.width = W; c.height = H;
+      const W = 1200, H = 1500;
+      const c = await stone.current!.snapshot(W, H);
       const g = c.getContext('2d')!;
-      const img = new Image(); img.src = info.bg; await img.decode();
-      const sc = Math.max(W / img.width, H / img.height);
-      g.drawImage(img, (W - img.width * sc) / 2, (H - img.height * sc) / 2, img.width * sc, img.height * sc);
-      const grad = g.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, 'rgba(42,36,32,.15)'); grad.addColorStop(.45, 'rgba(42,36,32,.55)'); grad.addColorStop(1, 'rgba(42,36,32,.9)');
+      const grad = g.createLinearGradient(0, H * 0.55, 0, H);
+      grad.addColorStop(0, 'rgba(20,16,12,0)'); grad.addColorStop(1, 'rgba(20,16,12,.85)');
       g.fillStyle = grad; g.fillRect(0, 0, W, H);
       g.fillStyle = '#fbf7ef'; g.textAlign = 'center'; g.direction = 'rtl';
-      let size = 220; g.font = `${size}px ${info.font}`;
-      while (g.measureText(text).width > W - 160 && size > 60) { size -= 10; g.font = `${size}px ${info.font}`; }
-      g.fillText(text, W / 2, H * 0.52);
       g.font = `600 64px ${getComputedStyle(document.body).getPropertyValue('--font-display') || 'sans-serif'}`;
-      g.fillText(name.trim(), W / 2, H * 0.66);
+      g.fillText(name.trim(), W / 2, H * 0.78);
       g.font = `36px ${getComputedStyle(document.body).fontFamily}`;
       g.fillStyle = '#ede2ce';
-      g.fillText(`بالخط ${info.name} · ذاكرة وطن`, W / 2, H * 0.72);
+      g.fillText(`بالخط ${info.name} · ذاكرة وطن`, W / 2, H * 0.84);
       g.font = `22px ${getComputedStyle(document.body).fontFamily}`;
-      g.fillText(`صورة الخلفية: ${info.bgCredit.credit} · ${info.bgCredit.license} · Wikimedia Commons`, W / 2, H - 60);
+      g.fillText('الحجر مرسوم بالكود، والحروف من جداول موثقة مذكورة في المنصة', W / 2, H - 60);
       const blob: Blob = await new Promise((r) => c.toBlob((b) => r(b!), 'image/png'));
       const a = linkRef.current!;
       a.href = URL.createObjectURL(blob); a.download = `${name.trim()}-${info.key}.png`; a.click();
@@ -62,7 +62,7 @@ export function NameStudio({ scripts, letters }: { scripts: ScriptInfo[]; letter
       <div className={s.tabs} role="tablist" aria-label="الخط">
         {scripts.map((sc) => (
           <button key={sc.key} role="tab" type="button" aria-selected={active === sc.key} aria-controls="panel" id={`tab-${sc.key}`}
-            className={s.tab} onClick={() => setActive(sc.key)}>
+            className={s.tab} onClick={() => { setActive(sc.key); }}>
             <span className={s.tabGlyph} style={{ fontFamily: sc.font }} aria-hidden="true">{valid ? glyphs(transliterate(name, letters, sc.key)) : ''}</span>
             <span>{sc.name}</span>
           </button>
@@ -70,12 +70,17 @@ export function NameStudio({ scripts, letters }: { scripts: ScriptInfo[]; letter
       </div>
 
       <section id="panel" role="tabpanel" aria-labelledby={`tab-${active}`} className={s.panel}>
-        <figure className={s.stone} style={{ backgroundImage: `url(${info.bg})` }}>
-          <p className={s.glyphs} style={{ fontFamily: info.font }} dir="rtl" lang="und" aria-label={`${name} بالخط ${info.name}`} data-testid="glyphs">{text}</p>
-          <figcaption className={s.bgCredit}>
-            الخلفية: <bdi>{info.bgCredit.credit}</bdi> · <a href={info.bgCredit.license_url ?? info.bgCredit.source_url} target="_blank" rel="noopener noreferrer"><bdi>{info.bgCredit.license}</bdi></a> · <a href={info.bgCredit.source_url} target="_blank" rel="noopener noreferrer">المصدر</a>
-          </figcaption>
-        </figure>
+        <div className={s.stoneCol}>
+          <CarvedStone ref={stone} text={valid ? text : ''} font={info.font} material={MATERIAL[active]} label={`${name} بالخط ${info.name}، منقوشاً على ${STONE[active]}`} />
+          <p className="sr-only" dir="rtl" lang="und" data-testid="glyphs">{text}</p>
+          <figure className={s.real}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={info.bg} alt={`نقش حقيقي بالخط ${info.name}`} className={s.realImg} loading="lazy" />
+            <figcaption>
+              <strong>نقش حقيقي بهذا الخط.</strong> <bdi>{info.bgCredit.credit}</bdi> · <a href={info.bgCredit.license_url ?? info.bgCredit.source_url} target="_blank" rel="noopener noreferrer"><bdi>{info.bgCredit.license}</bdi></a> · <a href={info.bgCredit.source_url} target="_blank" rel="noopener noreferrer">المصدر</a>
+            </figcaption>
+          </figure>
+        </div>
 
         <div className={s.explain}>
           <h2>{name.trim()} بالخط {info.name}</h2>

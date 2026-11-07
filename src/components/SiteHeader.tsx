@@ -4,6 +4,7 @@ import { getDict } from '@/i18n';
 import { getViewer, hasRole } from '@/lib/viewer';
 import { signOut } from '@/app/signin/actions';
 import { ThemeToggle } from './ThemeToggle';
+import { SoundToggle } from './SoundToggle';
 import { AccountMenu } from './AccountMenu';
 import s from './SiteHeader.module.css';
 
@@ -34,6 +35,7 @@ export function SiteHeader() {
           <Suspense fallback={<li aria-hidden="true" className={s.placeholder} />}>
             <UserNav />
           </Suspense>
+          <li><SoundToggle /></li>
           <li><ThemeToggle label={t.nav.theme} /></li>
         </ul>
       </nav>

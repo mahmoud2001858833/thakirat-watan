@@ -1,0 +1,16 @@
+.trigger { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 10px; }
+.trigger :global(img) { transition: transform 900ms var(--ease), filter 600ms var(--ease); }
+.trigger:hover :global(img) { filter: brightness(1.04); }
+.trigger:active :global(img) { transform: scale(.995); }
+.badge {
+  position: absolute; inset-inline-end: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 999px; background: rgb(28 23 20 / .78); color: #fbf7ef; font-size: .9rem; font-weight: 600;
+  backdrop-filter: blur(6px); transition: transform 300ms var(--ease), background 300ms var(--ease);
+}
+.trigger:hover .badge { transform: translateY(-2px); background: rgb(28 23 20 / .92); }
+.sheet { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100dvh; padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); gap: 8px; }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #fbf7ef; }
+.title { font-size: var(--step-1); margin: 0; color: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.close { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgb(255 255 255 / .3); background: rgb(255 255 255 / .08); color: #fbf7ef; font-size: 1.8rem; line-height: 1; cursor: pointer; flex: none; }
+.close:hover { background: rgb(255 255 255 / .2); }
+.stage { min-height: 0; height: 100%; }

@@ -14,7 +14,7 @@
 .nav a { color: var(--ink); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; }
 .nav a:hover { color: var(--petra-text); }
 .nav :global(.btn-quiet) { min-height: 44px; padding-inline: 0; color: var(--ink); font-weight: 400; }
-.nav :global(.theme-toggle) {
+.nav :global(.theme-toggle), .nav :global(.icon-btn) {
   width: 44px; height: 44px; display: grid; place-items: center;
   border: 1px solid var(--line-strong); border-radius: 50%; background: color-mix(in srgb, var(--paper) 80%, transparent);
   color: var(--ink); cursor: pointer;
@@ -50,3 +50,8 @@
 :global(body:has(#window)) .mark { visibility: hidden; }
 
 @media (max-width: 1080px) { .wide { display: none; } }
+
+.nav :global(.theme-toggle), .nav :global(.icon-btn) { transition: background var(--dur) var(--ease), transform 160ms var(--ease), border-color var(--dur) var(--ease); }
+.nav :global(.theme-toggle):hover, .nav :global(.icon-btn):hover { border-color: var(--ink); background: var(--paper); }
+.nav :global(.icon-btn)[aria-pressed="false"] { color: var(--ink-2); }
+@media (max-width: 400px) { .nav ul { gap: 6px; } .nav :global(.theme-toggle), .nav :global(.icon-btn) { width: 40px; height: 40px; } }

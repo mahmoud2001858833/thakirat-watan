@@ -1,19 +1,8 @@
 [
  {
-  "key": "hero-dawn",
-  "file": "File:Ajloun Forest Reserve in Jordan kz03.jpg"
- },
- {
-  "key": "hero-day",
-  "file": "File:The Treasury, Petra, Jordan1.jpg"
- },
- {
-  "key": "hero-dusk",
-  "file": "File:Wadi Rum at sunset1.jpg"
- },
- {
-  "key": "hero-night",
-  "file": "File:320A5538-Edit-3.jpg"
+  "key": "hero-khazneh",
+  "file": "File:Petra Al Khazneh 1975.jpg",
+  "maxWidth": 3200
  },
  {
   "key": "mosaic-madaba",

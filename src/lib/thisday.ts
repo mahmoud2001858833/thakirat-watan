@@ -36,3 +36,11 @@ export async function eventDays() {
   const { data } = await supabase.rpc('event_days');
   return ((data ?? []) as { m: number; d: number; n: number }[]).map((x) => ({ key: md(x.m, x.d), n: x.n }));
 }
+
+/** كل الأحداث المنشورة مرتبة باليوم من السنة (لتقليب صفحات الجريدة في المتصفح) */
+export async function allEvents() {
+  const supabase = await createClient();
+  const { data } = await supabase.from('items').select('id, title_ar, summary_ar, date_exact, trust, is_demo, item_sources(locator, sources(citation, url))')
+    .eq('is_event', true).eq('status', 'published').not('date_exact', 'is', null).limit(2000);
+  return ((data ?? []) as unknown as DayEvent[]).sort((a, b) => a.date_exact.slice(5).localeCompare(b.date_exact.slice(5)) || a.date_exact.localeCompare(b.date_exact));
+}

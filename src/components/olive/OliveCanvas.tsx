@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { GOV_TONES, W, growTree, leafPaths, paintBackdrop, paintTree, visitorLeaves, type TreeState } from './tree';
+import { BANDS, GOV_TONES, W, bandOf, growTree, leafPath, paintBackdrop, paintTree, visitorLeaves, wind, windPaths, type TreeState } from './tree';
+import { play, buzz } from '@/lib/client/sound';
 import s from './olive.module.css';
 
 type Gov = { id: string; key: string; name_ar: string };
@@ -10,9 +11,9 @@ const PAD = 200; // هامش الذاكرة حتى لا تُقص أطراف ال
 
 const reduce = () => typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick, onData }: {
+export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick, onData, planted }: {
   state: TreeState; govs: Gov[]; buds: { id: string; g: number }[];
-  filterGov: number | null; filterSchool: string | null; onPick: (id: string) => void; onData?: (d: Data) => void;
+  filterGov: number | null; filterSchool: string | null; onPick: (id: string, at: { x: number; y: number }) => void; onData?: (d: Data) => void; planted?: string | null;
 }) {
   const wrap = useRef<HTMLDivElement>(null), bg = useRef<HTMLCanvasElement>(null), fg = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<Data | null>(null);
@@ -21,6 +22,9 @@ export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick
   const cache = useRef<{ canvas: HTMLCanvasElement; scale: number } | null>(null);
   const raf = useRef(0), anim = useRef<number | null>(null), budT = useRef(0), moving = useRef(false), idle = useRef(0);
   const tree = useMemo(() => growTree(state.branches), [state.branches]);
+  const picked = useRef<{ x: number; y: number; a: number; t0: number } | null>(null);
+  const growing = useRef<{ i: number; t0: number } | null>(null);
+  const still = useRef(true); // تقليل الحركة: لا ريح
 
   useEffect(() => {
     let live = true;
@@ -29,7 +33,7 @@ export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick
   }, [onData]);
 
   const pos = useMemo(() => (data ? visitorLeaves(tree, data.ids, data.g) : new Float32Array()), [data, tree]);
-  const paths = useMemo(() => data ? leafPaths(pos, data.g, (i) =>
+  const paths = useMemo(() => data ? windPaths(pos, data.g, (i) =>
     (filterGov === null || data.g[i] === filterGov) && (!filterSchool || data.s[i] === filterSchool)) : null, [data, pos, filterGov, filterSchool]);
   const budPos = useMemo(() => visitorLeaves(tree, buds.map((b) => b.id), buds.map((b) => b.g)), [tree, buds]);
 
@@ -45,22 +49,67 @@ export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick
     const dpr = Math.min(devicePixelRatio || 1, 2), ctx = c.getContext('2d')!, v = view.current;
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, c.width, c.height);
     ctx.setTransform(v.k * dpr, 0, 0, v.k * dpr, v.x * dpr, v.y * dpr);
+    const now = performance.now(), tt = still.current ? 0 : now / 1000;
+    // الجذع والأغصان تتمايل قليلاً حول قاعدة الجذع
+    const base = wind(tt, 3);
+    ctx.save(); ctx.translate(W / 2, W * 0.97); ctx.rotate(base.rot * 0.18); ctx.translate(-W / 2, -W * 0.97);
     ctx.drawImage(cache.current.canvas, -PAD, -PAD, W + PAD * 2, W + PAD * 2);
+    ctx.restore();
     if (paths) {
-      if (filterGov !== null || filterSchool) { ctx.globalAlpha = 0.28; ctx.fillStyle = '#6f7a5c'; ctx.fill(paths.off); ctx.globalAlpha = 1; }
-      paths.on.forEach((p, i) => { ctx.fillStyle = GOV_TONES[i]; ctx.fill(p); });
-      // إطار ذهبي يميّز أوراق الناس؛ يُرسم عند السكون، أو دائماً حين تكون الأوراق قليلة
-      if (!moving.current || (data?.ids.length ?? 0) < 2500) {
-        ctx.lineWidth = Math.max(0.9, 1.4 / v.k); ctx.strokeStyle = '#e2c37a';
-        paths.on.forEach((p) => ctx.stroke(p));
+      const dim = filterGov !== null || !!filterSchool;
+      const outline = !moving.current || (data?.ids.length ?? 0) < 2500;
+      ctx.lineWidth = Math.max(0.9, 1.4 / v.k); ctx.strokeStyle = '#e2c37a';
+      for (let b = 0; b < BANDS; b++) {
+        const w = wind(tt, b);
+        ctx.save(); ctx.translate(w.dx, w.dy);
+        if (dim) { ctx.globalAlpha = 0.28; ctx.fillStyle = '#6f7a5c'; ctx.fill(paths.off[b]); ctx.globalAlpha = 1; }
+        paths.on.forEach((bands, gi) => { ctx.fillStyle = GOV_TONES[gi]; ctx.fill(bands[b]); });
+        if (outline) paths.on.forEach((bands) => ctx.stroke(bands[b]));
+        ctx.restore();
       }
+    }
+    // الورقة الملموسة: حلقة ذهبية تنبض
+    if (picked.current) {
+      const pk = picked.current, k = Math.min(1, (now - pk.t0) / 600), w = wind(tt, bandOf(pk.x));
+      ctx.save(); ctx.translate(w.dx, w.dy);
+      ctx.strokeStyle = `rgba(226,195,122,${1 - k * 0.6})`; ctx.lineWidth = 2.5 / v.k;
+      ctx.beginPath(); ctx.arc(pk.x + Math.cos(pk.a) * 10, pk.y + Math.sin(pk.a) * 10, 10 + k * 14, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
     }
     // براعم صاحب الجلسة: تنمو بهدوء
     const grow = Math.min(1, budT.current);
     for (let i = 0; i < buds.length; i++) {
-      const x = budPos[i * 3], y = budPos[i * 3 + 1];
-      ctx.fillStyle = '#c4836f'; ctx.beginPath(); ctx.ellipse(x, y, 4.5 * grow, 6.5 * grow, budPos[i * 3 + 2], 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#fbf7ef'; ctx.lineWidth = 1; ctx.stroke();
+      const x = budPos[i * 3], y = budPos[i * 3 + 1], a = budPos[i * 3 + 2], w = wind(tt, bandOf(x));
+      ctx.save(); ctx.translate(w.dx, w.dy);
+      if (growing.current?.i === i) {
+        // ورقتك: ساق تمتد، ثم ورقة تتفتح بارتداد خفيف، ثم بريق واسم
+        const e = (now - growing.current.t0) / 1000;
+        const stem = Math.min(1, e / 0.7), leaf = Math.max(0, Math.min(1, (e - 0.5) / 0.9));
+        const over = leaf < 1 ? 1 - Math.pow(1 - leaf, 3) * Math.cos(leaf * 4.2) : 1;
+        ctx.strokeStyle = '#5b4a2c'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+        const sx = x - Math.cos(a) * 16, sy = y - Math.sin(a) * 16;
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + (x - sx) * stem, sy + (y - sy) * stem); ctx.stroke();
+        if (leaf > 0) {
+          const pth = new Path2D(); leafPath(pth, x, y, a - (1 - over) * 0.9, 30 * over, 7 * over);
+          ctx.fillStyle = '#c4836f'; ctx.fill(pth); ctx.strokeStyle = '#fbf7ef'; ctx.lineWidth = 1.4; ctx.stroke(pth);
+        }
+        if (e > 1.2) {
+          const sp = Math.min(1, (e - 1.2) / 0.8);
+          for (let j = 0; j < 8; j++) {
+            const an = (j / 8) * Math.PI * 2 + e, r = 14 + sp * 26;
+            ctx.fillStyle = `rgba(226,195,122,${1 - sp})`;
+            ctx.beginPath(); ctx.arc(x + Math.cos(an) * r, y + Math.sin(an) * r, 2.2, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.globalAlpha = Math.min(1, (e - 1.2) / 0.5);
+          ctx.font = `600 ${16 / Math.max(0.6, v.k / 2)}px ${getComputedStyle(document.body).fontFamily}`; ctx.textAlign = 'center';
+          ctx.fillStyle = '#2a2420'; ctx.strokeStyle = 'rgba(251,247,239,.9)'; ctx.lineWidth = 4 / v.k;
+          ctx.strokeText('ورقتك', x, y - 26); ctx.fillText('ورقتك', x, y - 26); ctx.globalAlpha = 1;
+        }
+      } else {
+        ctx.fillStyle = '#c4836f'; ctx.beginPath(); ctx.ellipse(x, y, 4.5 * grow, 6.5 * grow, a, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#fbf7ef'; ctx.lineWidth = 1; ctx.stroke();
+      }
+      ctx.restore();
     }
   }, [paths, buds, budPos, filterGov, filterSchool]);
   const schedule = useCallback(() => { if (!raf.current) raf.current = requestAnimationFrame(draw); }, [draw]);
@@ -96,6 +145,19 @@ export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick
   }, [size, fit, rebuild, schedule, state.season]);
   useEffect(() => { schedule(); }, [schedule]);
 
+  // الريح: رسم مستمر ما دامت الشجرة ظاهرة والصفحة مفتوحة، ويتوقف مع تقليل الحركة
+  useEffect(() => {
+    still.current = reduce();
+    if (still.current) return;
+    let visible = true, id = 0;
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
+    if (wrap.current) io.observe(wrap.current);
+    const tick = () => { if (visible && document.visibilityState === 'visible') draw(); id = requestAnimationFrame(tick); };
+    id = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(id); io.disconnect(); };
+  }, [draw]);
+
+
   // نمو البراعم
   useEffect(() => {
     if (!buds.length) return;
@@ -118,6 +180,18 @@ export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick
     };
     anim.current = requestAnimationFrame(step);
   }, [rebuild, schedule]);
+  // ورقتك الجديدة: نقترب منها ثم تنبت أمامك
+  useEffect(() => {
+    if (!planted || !size.w) return;
+    const i = buds.findIndex((b) => b.id === planted); if (i < 0) return;
+    const x = budPos[i * 3], y = budPos[i * 3 + 1], k = Math.min(3, Math.max(1.8, size.w / 380));
+    const tm = setTimeout(() => {
+      animateTo({ k, x: size.w / 2 - x * k, y: size.h / 2 - y * k });
+      setTimeout(() => { growing.current = { i, t0: performance.now() }; play('rustle'); setTimeout(() => { play('chime'); buzz([10, 50, 10]); }, 1200); if (still.current) { const end = performance.now() + 2200; const f = () => { schedule(); if (performance.now() < end) requestAnimationFrame(f); }; f(); } }, 750);
+    }, 400);
+    return () => clearTimeout(tm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planted, size.w, buds.length]);
   useEffect(() => {
     if (!size.w) return;
     if (filterGov === null) { animateTo(fit(size.w, size.h)); return; }
@@ -140,14 +214,18 @@ export function OliveCanvas({ state, govs, buds, filterGov, filterSchool, onPick
 
   const pick = (sx: number, sy: number) => {
     if (!data) return;
-    const v = view.current, wx = (sx - v.x) / v.k, wy = (sy - v.y) / v.k, rad = Math.max(9, 14 / v.k);
+    const v = view.current, wx = (sx - v.x) / v.k, wy = (sy - v.y) / v.k, rad = Math.max(16, 24 / v.k);
     let best = -1, bd = rad * rad;
     for (let i = 0; i < data.ids.length; i++) {
       if (filterGov !== null && data.g[i] !== filterGov) continue;
       const dx = pos[i * 3] + Math.cos(pos[i * 3 + 2]) * 7 - wx, dy = pos[i * 3 + 1] + Math.sin(pos[i * 3 + 2]) * 7 - wy, d = dx * dx + dy * dy;
       if (d < bd) { bd = d; best = i; }
     }
-    if (best >= 0) onPick(data.ids[best]);
+    if (best >= 0) {
+      picked.current = { x: pos[best * 3], y: pos[best * 3 + 1], a: pos[best * 3 + 2], t0: performance.now() };
+      const r = fg.current!.getBoundingClientRect();
+      onPick(data.ids[best], { x: r.left + sx, y: r.top + sy }); play('rustle'); buzz(8); schedule();
+    }
   };
 
   return (
