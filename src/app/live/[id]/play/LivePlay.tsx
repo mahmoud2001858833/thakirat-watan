@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { browserClient } from '@/lib/supabase/browser';
+import { openChannel } from '@/lib/client/realtime';
 import { play, buzz } from '@/lib/client/sound';
 import type { Activity, Results, Session } from '@/lib/live';
 import { ResultsView } from '../ResultsView';
@@ -22,12 +23,19 @@ export function LivePlay({ session, activities, me }: { session: Session; activi
   const act = activities.find((a) => a.idx === ses.current);
 
   useEffect(() => {
-    const ch = sb.channel(`live-play:${ses.id}`)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'live_sessions', filter: `id=eq.${ses.id}` }, (p: { new: Session }) => {
-        setSes((old) => { if (old.current !== p.new.current) { play('pop'); buzz(15); } return { ...old, ...p.new }; });
-      })
-      .subscribe();
-    return () => { sb.removeChannel(ch); };
+    const apply = (n: Partial<Session>) => setSes((old) => {
+      if (n.current !== undefined && old.current !== n.current) { play('pop'); buzz(15); }
+      return { ...old, ...n };
+    });
+    const close = openChannel(sb, (c) => c.channel(`live-play:${ses.id}`)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'live_sessions', filter: `id=eq.${ses.id}` }, (p: { new: Session }) => apply(p.new))
+      .subscribe());
+    // احتياط: نتحقق من حالة الجلسة كل بضع ثوانٍ
+    const t = setInterval(async () => {
+      const { data } = await sb.from('live_sessions').select('current, reveal, status').eq('id', ses.id).maybeSingle();
+      apply(data ?? { status: 'ended' });
+    }, 4000);
+    return () => { close(); clearInterval(t); };
   }, [sb, ses.id]);
   // سؤال جديد: نبدأ من الصفر
   useEffect(() => { setChoice(null); setText(''); setPins([]); setSent(false); setErr(null); }, [ses.current]); // eslint-disable-line react-hooks/set-state-in-effect
@@ -38,6 +46,8 @@ export function LivePlay({ session, activities, me }: { session: Session; activi
     if (data) setRes(data as Results);
   }, [act, ses.reveal, sb]);
   useEffect(() => { loadResults(); }, [loadResults]); // eslint-disable-line react-hooks/set-state-in-effect
+  // تحديث النتائج حين تُكشف
+  useEffect(() => { if (!ses.reveal) return; const t = setInterval(loadResults, 3000); return () => clearInterval(t); }, [ses.reveal, loadResults]);
 
   const send = async (args: { p_choice?: number; p_body?: string; p_x?: number; p_y?: number }) => {
     if (!act) return;

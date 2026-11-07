@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { browserClient } from '@/lib/supabase/browser';
+import { openChannel } from '@/lib/client/realtime';
 import { play } from '@/lib/client/sound';
 import type { Activity, Results, Session } from '@/lib/live';
 import { ResultsView } from './ResultsView';
@@ -41,12 +42,13 @@ export function LiveConsole({ session, activities, classSize }: { session: Sessi
 
   // كل إجابة جديدة تصل لحظياً
   useEffect(() => {
-    const ch = sb.channel(`live-console:${ses.id}`)
+    const close = openChannel(sb, (c) => c.channel(`live-console:${ses.id}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'live_responses', filter: `session_id=eq.${ses.id}` }, () => {
         clearTimeout(timer.current); timer.current = window.setTimeout(() => { refresh(); play('pop'); }, 150);
       })
-      .subscribe((st: string) => setLive(st === 'SUBSCRIBED'));
-    return () => { sb.removeChannel(ch); };
+      .subscribe((st: string) => setLive(st === 'SUBSCRIBED')));
+    const t = setInterval(refresh, 6000);
+    return () => { close(); clearInterval(t); };
   }, [sb, ses.id, refresh]);
 
   const update = async (p: Partial<Pick<Session, 'current' | 'reveal' | 'status'>>) => {

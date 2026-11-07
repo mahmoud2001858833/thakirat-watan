@@ -59,7 +59,8 @@ export function GrandPuzzle({ mosaic, section, me, names }: {
     let stop = false;
     let cleanup = () => {};
     (async () => {
-      await sb.realtime.setAuth();
+      const { data: sess } = await sb.auth.getSession();
+      if (sess.session) await sb.realtime.setAuth(sess.session.access_token);
       if (stop) return;
       const db = sb.channel(`grand-db:${section.id}`)
         .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'grand_sections', filter: `id=eq.${section.id}` }, (p: { new: { state: number[]; moves: number; completed_at: string | null } }) => {
@@ -80,6 +81,17 @@ export function GrandPuzzle({ mosaic, section, me, names }: {
     })();
     return () => { stop = true; cleanup(); };
   }, [section.id, me.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  // احتياط: حالة الجزء من القاعدة كل بضع ثوانٍ
+  useEffect(() => {
+    const t = setInterval(async () => {
+      if (dragRef.current || document.visibilityState !== 'visible') return;
+      const { data } = await browserClient().from('grand_sections').select('state, moves, completed_at').eq('id', section.id).maybeSingle();
+      if (!data) return;
+      setState((old) => { if (old.join() === (data.state as number[]).join()) return old; snapshot(); return data.state as number[]; });
+      setMoves(data.moves); if (data.completed_at) setDone(true);
+    }, 5000);
+    return () => clearInterval(t);
+  }, [section.id]); // eslint-disable-line react-hooks/exhaustive-deps
   // أشباح الزملاء تختفي إن انقطعوا
   useEffect(() => {
     const t = setInterval(() => setPeers((x) => Object.fromEntries(Object.entries(x).filter(([, p]) => Date.now() - p.t < 4000))), 1500);

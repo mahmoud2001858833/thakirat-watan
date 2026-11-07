@@ -67,10 +67,10 @@ test('المعلمان ينشئان صفين، ويضيفان أربعة طلا�
 });
 
 test('التوأمة: معلم العقبة يطلب، ومعلم إربد يقبل، والطلاب يدخلون برموزهم', async ({ browser }) => {
-  await B.goto(`/teach/${st.classB}#twin`);
+  await B.goto(`/teach/${st.classB}`); await B.reload();
   await B.getByRole('listitem').filter({ hasText: 'إربد' }).filter({ has: B.getByRole('button', { name: 'اطلب التوأمة' }) }).first().getByRole('button', { name: 'اطلب التوأمة' }).click();
   await expect(B.getByText('أرسلت طلب التوأمة')).toBeVisible();
-  await A.goto(`/teach/${st.classA}#twin`);
+  await A.goto(`/teach/${st.classA}`); await A.reload();
   await A.getByRole('button', { name: 'اقبل التوأمة' }).first().click();
   await A.waitForURL(/\/twin\/[0-9a-f-]{36}$/);
   st.twin = A.url().split('/').pop();
@@ -124,7 +124,7 @@ test('الجلسة المباشرة: المعلم يعرض صورة، والطل
   if (dir) await teacher(screen, 'teacherA');
   const p1 = dir ? await open(browser, true, `${dir}/phone1`) : s1, p2 = dir ? await open(browser, true, `${dir}/phone2`) : s2;
   if (dir) { await student(p1, st.codes[0]); await student(p2, st.codes[1]); }
-  await screen.goto(`/teach/${st.classA}#live`);
+  await screen.goto(`/teach/${st.classA}`); await screen.reload();
   await screen.getByTestId('open-live').click();
   await screen.waitForURL(/\/live\/[0-9a-f-]{36}$/);
   st.live = screen.url().split('/').pop();
@@ -178,7 +178,7 @@ test('الجلسة المباشرة: المعلم يعرض صورة، والطل
 
 test('الفسيفساء الكبرى: كل صف يتبنى جزءاً، والزملاء يرون القطع تتحرك مباشرة، ثم تكتمل اللوحة', async () => {
   const claim = async (p: Page, cls: string) => {
-    await p.goto(`/teach/${cls}#grand`);
+    await p.goto(`/teach/${cls}`); await p.reload();
     await p.getByRole('button', { name: /تبنَّ جزءاً من «فسيفساء الاختبار» \(تجريبي\)/ }).click();
     await p.waitForURL(/\/grand\/[0-9a-f-]{36}$/);
     return p.url().split('/').pop()!;

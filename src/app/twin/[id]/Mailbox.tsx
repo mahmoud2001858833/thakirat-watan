@@ -2,6 +2,7 @@
 import { useActionState, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { browserClient } from '@/lib/supabase/browser';
+import { openChannel } from '@/lib/client/realtime';
 import { postTwin, reviewTwin, type PostState } from '@/lib/actions/classroom';
 import { JordanMap } from '@/components/classroom/JordanMap';
 import { play, buzz } from '@/lib/client/sound';
@@ -23,11 +24,12 @@ export function Mailbox({ twin, messages, isTeacher, meMember }: { twin: TwinInf
   const seen = useRef(new Set(messages.filter((m) => m.status === 'approved').map((m) => m.id)));
   // رسالة معتمدة جديدة: نبضة على الخريطة وتحديث الصفحة
   useEffect(() => {
-    const sb = browserClient();
-    const ch = sb.channel(`twin:${twin.id}`)
+    const close = openChannel(browserClient(), (sb) => sb.channel(`twin:${twin.id}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'twin_messages', filter: `twinning_id=eq.${twin.id}` }, () => router.refresh())
-      .subscribe();
-    return () => { sb.removeChannel(ch); };
+      .subscribe());
+    // احتياط إن انقطع الاتصال اللحظي
+    const t = setInterval(() => { if (document.visibilityState === 'visible') router.refresh(); }, 20_000);
+    return () => { close(); clearInterval(t); };
   }, [twin.id, router]);
   useEffect(() => {
     const fresh = messages.filter((m) => m.status === 'approved' && !seen.current.has(m.id));

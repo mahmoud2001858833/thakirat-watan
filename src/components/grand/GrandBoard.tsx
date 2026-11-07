@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { browserClient } from '@/lib/supabase/browser';
+import { openChannel } from '@/lib/client/realtime';
 import { crop, type Board } from '@/lib/grand';
 import { play, buzz } from '@/lib/client/sound';
 import s from './grand.module.css';
@@ -21,11 +22,12 @@ export function GrandBoard({ initial }: { initial: Board }) {
     if (data) setBoard(data as Board);
   }, [m.slug]);
   useEffect(() => {
-    const sb = browserClient(); let t = 0;
-    const ch = sb.channel(`grand-board:${m.id}`)
+    let t = 0;
+    const close = openChannel(browserClient(), (sb) => sb.channel(`grand-board:${m.id}`)
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'grand_sections', filter: `mosaic_id=eq.${m.id}` }, () => { clearTimeout(t); t = window.setTimeout(refresh, 250); })
-      .subscribe();
-    return () => { sb.removeChannel(ch); };
+      .subscribe());
+    const iv = setInterval(() => { if (document.visibilityState === 'visible') refresh(); }, 15_000);
+    return () => { close(); clearInterval(iv); };
   }, [m.id, refresh]);
   // اكتملت للتو، أو مكتملة عند فتح الصفحة: احتفال
   useEffect(() => {
