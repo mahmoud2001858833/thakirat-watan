@@ -20,6 +20,8 @@ const ctxs: BrowserContext[] = [];
 async function open(browser: Browser, phone = false, rec?: string) {
   const c = await browser.newContext({ ...(phone ? devices['Pixel 7'] : { viewport: { width: 1366, height: 860 } }), locale: 'ar-JO', baseURL: test.info().project.use.baseURL,
     ...(rec ? { recordVideo: { dir: rec, size: phone ? { width: 412, height: 860 } : { width: 1366, height: 860 } } } : {}) });
+  // التسجيل في المتصفح الخفي لا يتسع لوضع ملء الشاشة؛ نُبقي «شاشة الصف» داخل النافذة
+  if (rec) await c.addInitScript(() => { Object.defineProperty(Element.prototype, 'requestFullscreen', { value: undefined }); });
   ctxs.push(c); return c.newPage();
 }
 async function teacher(page: Page, who: 'teacherA' | 'teacherB') {
@@ -185,10 +187,15 @@ test('الفسيفساء الكبرى: كل صف يتبنى جزءاً، وال�
   };
   const secA = await claim(A, st.classA!), secB = await claim(B, st.classB!);
   // طالب من الصف الآخر لا يدخل جزء إربد
-  const r = await s3.goto(`/grand/${secA}`); expect(r?.status()).toBe(404);
+  // (الصفحة تُبث قبل قرار «غير موجودة»، فنفحص المحتوى لا رمز الحالة)
+  await s3.goto(`/grand/${secA}`);
+  await expect(s3.getByRole('heading', { name: 'لم نجد هذه الصفحة في الأرشيف' })).toBeVisible();
+  await expect(s3.getByTestId('grand-puzzle')).toHaveCount(0);
   await s1.goto(`/grand/${secA}`); await s2.goto(`/grand/${secA}`);
   await expect(s1.getByTestId('online')).toContainText(/.+/, { timeout: 15_000 });
-  await expect(s2.getByTestId('online').locator('li')).toHaveCount(2, { timeout: 20_000 });
+  // الطالبان ومعلمهما (المعلم فُتح له الجزء بعد التبني)
+  await expect(s2.getByTestId('online').locator('li')).toHaveCount(3, { timeout: 20_000 });
+  await expect(s2.getByTestId('online')).toContainText('المعلم');
   // s1 يسحب قطعة ببطء: s2 يرى شبحها باسم زميله
   const t0 = s1.locator('[data-pos="0"]'), b0 = (await t0.boundingBox())!, t4 = (await s1.locator('[data-pos="4"]').boundingBox())!;
   await s1.mouse.move(b0.x + 10, b0.y + 10); await s1.mouse.down();
